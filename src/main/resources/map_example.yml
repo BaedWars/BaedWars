@@ -1,0 +1,40 @@
+savePath: worlds/map01
+teams:
+  - color: RED
+    spawn:
+      x: 10.0
+      y: 61.0
+      z: 10.5
+      yaw: 90.0
+      pitch: 0.0
+    itemShop:
+      x: 11.0
+      y: 61.0
+      z: 10.5
+      yaw: 180.0
+      pitch: 0.0
+    teamShop:
+      x: 9.0
+      y: 61.0
+      z: 10.5
+      yaw: 0.0
+      pitch: 0.0
+  - color: BLUE
+    spawn:
+      x: 20.0
+      y: 61.0
+      z: 20.5
+      yaw: -90.0
+      pitch: 0.0
+    itemShop:
+      x: 21.0
+      y: 61.0
+      z: 20.5
+      yaw: 180.0
+      pitch: 0.0
+    teamShop:
+      x: 19.0
+      y: 61.0
+      z: 20.5
+      yaw: 0.0
+      pitch: 0.0
