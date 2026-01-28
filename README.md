@@ -3,7 +3,7 @@
 Currently WIP, Docs available under https://baedwars.myhtl.app
 ## Getting Started
 ### Requirements
-- Java 21 or higher
+- Java 25 or higher
 
 ### Download
 All stable versions of BaedWars are available as a JAR at GitHub Releases.  

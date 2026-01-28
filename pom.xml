@@ -59,7 +59,7 @@
         <dependency>
             <groupId>net.minestom</groupId>
             <artifactId>minestom</artifactId>
-            <version>2025.09.13-1.21.8</version>
+            <version>2026.01.08-1.21.11</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
@@ -67,9 +67,9 @@
             <version>2.2</version>
         </dependency>
         <dependency>
-            <groupId>com.github.TogAr2</groupId>
+            <groupId>io.github.togar2</groupId>
             <artifactId>MinestomPvP</artifactId>
-            <version>56a831b</version>
+            <version>2025.12.29-1.21.11</version>
         </dependency>
         <!-- Required for all platforms -->
         <dependency>
