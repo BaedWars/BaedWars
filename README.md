@@ -1,5 +1,5 @@
 # BaedWars
-## A simple Minecraft-compatible Server, built with Minestom, for Bedwars!
+## A simple Minecraft-compatible Bedwars Server, built with Minestom!
 Currently WIP, Docs available under https://baedwars.myhtl.app
 ## Getting Started
 ### Requirements
