@@ -1,6 +1,7 @@
 package app.myhtl.baedwars.game;
 
 import net.minestom.server.entity.*;
+import net.minestom.server.entity.metadata.avatar.PlayerMeta;
 import net.minestom.server.network.packet.server.play.EntityMetaDataPacket;
 import net.minestom.server.network.packet.server.play.PlayerInfoRemovePacket;
 import net.minestom.server.network.packet.server.play.PlayerInfoUpdatePacket;
@@ -43,8 +44,7 @@ public class NPC extends Entity {
         // Spawn the player entity
         super.updateNewViewer(player);
 
-        // Enable skin layers
-        player.sendPackets(new EntityMetaDataPacket(getEntityId(), Map.of(17, Metadata.Byte((byte) 127))));
+        ((PlayerMeta) getEntityMeta()).setDisplayedSkinParts((byte) 0x7F);
     }
 
     @Override

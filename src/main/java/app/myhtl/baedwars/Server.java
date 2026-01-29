@@ -93,6 +93,5 @@ public class Server {
         CoreGame.generateLobbySidebar();
         MinecraftServer.getCommandManager().register(new SkipLobby());
         minecraftServer.start("0.0.0.0", 25545);
-        System.out.println("Minecraft Server started");
     }
 }
