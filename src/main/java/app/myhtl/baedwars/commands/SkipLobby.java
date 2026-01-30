@@ -29,7 +29,7 @@ public class SkipLobby extends Command {
                             player.setGameMode(GameMode.SURVIVAL);
                             player.setInvisible(false);
                             CoreGame.lobbySidebar.removeViewer(player);
-                            CoreGame.getTeamFromPlayer(player).sidebar.addViewer(player);
+                            Team.getTeamFromPlayer(player).sidebar.addViewer(player);
                         }
                     }
                 }

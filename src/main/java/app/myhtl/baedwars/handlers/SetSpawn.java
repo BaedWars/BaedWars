@@ -1,6 +1,7 @@
 package app.myhtl.baedwars.handlers;
 
 import app.myhtl.baedwars.game.CoreGame;
+import app.myhtl.baedwars.game.Team;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
@@ -19,7 +20,7 @@ public class SetSpawn {
         if (!Server.gameStarted) {
             player.setGameMode(GameMode.ADVENTURE);
             //player.setGameMode(GameMode.CREATIVE);
-            if (Objects.equals(CoreGame.getTeamFromPlayer(player).color, "")) {
+            if (Objects.equals(Team.getTeamFromPlayer(player).color, "")) {
                 CoreGame.joinRandomTeam(player);
             }
             player.setRespawnPoint(getSpawnPos(player));

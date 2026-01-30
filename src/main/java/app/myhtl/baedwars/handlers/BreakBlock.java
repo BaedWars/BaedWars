@@ -33,7 +33,7 @@ public class BreakBlock {
     public static void handle(PlayerBlockBreakEvent event, Scheduler scheduler) {
         Block broken = event.getBlock().defaultState();
         Player player = event.getPlayer();
-        Team team = CoreGame.getTeamFromPlayer(player);
+        Team team = Team.getTeamFromPlayer(player);
         for (Block bed : bedArray) {
             if (broken == bed) {
                 Instance instance = player.getInstance();

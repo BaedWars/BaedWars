@@ -19,6 +19,7 @@ public class BedwarsEventListener {
         playerNode.addListener(PlayerPickBlockEvent.class, MiddlePick::handle);
         playerNode.addListener(PlayerBlockBreakEvent.class, event -> BreakBlock.handle(event, scheduler));
         playerNode.addListener(PlayerBlockPlaceEvent.class, PlaceBlock::handle);
+        playerNode.addListener(PlayerBlockInteractEvent.class, InteractBlock::handle);
         playerNode.addListener(PlayerEntityInteractEvent.class, ClickNPC::handle);
         playerNode.addListener(PlayerSpawnEvent.class, ShowGameSidebar::handle);
         return playerNode;

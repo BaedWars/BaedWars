@@ -21,6 +21,8 @@ import app.myhtl.baedwars.game.ItemGen;
 import net.minestom.server.item.Material;
 import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +30,7 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 public class Server {
+    public static Logger logger = LoggerFactory.getLogger(Server.class);
     public static boolean gameStarted = false;
     public static World map;
     public static NPC[] npcs;

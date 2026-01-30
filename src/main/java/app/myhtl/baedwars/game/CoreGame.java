@@ -34,9 +34,11 @@ import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.tag.Tag;
 import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
+import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import static app.myhtl.baedwars.Server.round_id;
+import static app.myhtl.baedwars.game.Team.getTeamFromPlayer;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 public class CoreGame {
@@ -74,7 +76,7 @@ public class CoreGame {
                         player.setGameMode(GameMode.SURVIVAL);
                         player.setInvisible(false);
                         CoreGame.lobbySidebar.removeViewer(player);
-                        CoreGame.getTeamFromPlayer(player).sidebar.addViewer(player);
+                        getTeamFromPlayer(player).sidebar.addViewer(player);
                     }
                 }
             }
@@ -142,8 +144,7 @@ public class CoreGame {
         if (teams[randomTeamIndex].players[0] == null) {
             teams[randomTeamIndex].players[0] = player;
             teams[randomTeamIndex].playerUUIDs[0] = player.getUuid();
-            System.out.println(player.getUsername());
-            System.out.println(teams[randomTeamIndex].color);
+            Server.logger.info("Player {} was assigned to the {} Team", player.getUsername(), teams[randomTeamIndex].color);
         } else {
             joinRandomTeam(player);
         }
@@ -298,7 +299,6 @@ public class CoreGame {
                 }
             }
         }
-        System.out.println(npcs);
         return npcs.toArray(new NPC[0]);
     }
     public static int[] generateGameTypeData() {
@@ -306,27 +306,6 @@ public class CoreGame {
         int playersPerTeams = Integer.parseInt(gameTypeData[0]);
         int teamsAmount = gameTypeData.length;
         return new int[]{playersPerTeams, teamsAmount};
-    }
-
-    public static Team getTeamFromPlayer(Player player) {
-        for (Team team : teams) {
-            for (Player player1 : team.players) {
-                if (player1 == player) {
-                    return team;
-                }
-            }
-            UUID[] playerUUIDs = team.playerUUIDs;
-            for (int i = 0; i < playerUUIDs.length; i++) {
-                UUID uuid = playerUUIDs[i];
-                if (uuid != null) {
-                    if (Objects.equals(uuid.toString(), player.getUuid().toString())) {
-                        team.players[i] = player;
-                        return team;
-                    }
-                }
-            }
-        }
-        return new Team();
     }
 
     public static Pos getSpawnPos(Player player) {
@@ -372,7 +351,6 @@ public class CoreGame {
                 }
             }
         }
-        System.out.println(Arrays.toString(shopCategories));
         return shopCategories;
     }
 

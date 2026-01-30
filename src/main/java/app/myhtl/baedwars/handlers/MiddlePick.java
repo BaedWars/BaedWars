@@ -1,6 +1,6 @@
 package app.myhtl.baedwars.handlers;
 
-import app.myhtl.baedwars.game.CoreGame;
+import app.myhtl.baedwars.game.Team;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerPickBlockEvent;
 import net.minestom.server.item.ItemStack;
@@ -15,6 +15,6 @@ public class MiddlePick {
                 return;
             }
         }
-        player.sendMessage("You are in Team: " + CoreGame.getTeamFromPlayer(player).color);
+        player.sendMessage("You are in Team: " + Team.getTeamFromPlayer(player).color);
     }
 }
