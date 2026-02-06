@@ -20,7 +20,6 @@ public class VanillaEventListener {
         entityNode.addListener(ItemDropEvent.class, ItemDrop::handle);
         entityNode.addListener(PickupItemEvent.class, ItemPickup::handle);
         entityNode.addListener(PlayerMoveEvent.class, event -> VoidDeath.handle(event, scheduler));
-        //entityNode.addListener(PlayerMoveEvent.class, event -> FallDamage.handle(event, scheduler));
 
         return entityNode;
     }

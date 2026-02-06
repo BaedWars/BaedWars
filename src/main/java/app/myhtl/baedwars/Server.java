@@ -1,13 +1,15 @@
 package app.myhtl.baedwars;
 
 import app.myhtl.baedwars.commands.SkipLobby;
+import app.myhtl.baedwars.handlers.blocks.Beehive;
+import app.myhtl.baedwars.handlers.blocks.Chest;
+import app.myhtl.baedwars.handlers.blocks.EnderChest;
 import io.github.togar2.pvp.MinestomPvP;
 import io.github.togar2.pvp.feature.CombatFeatureSet;
 import io.github.togar2.pvp.feature.CombatFeatures;
 import io.github.togar2.pvp.feature.FeatureType;
 import io.github.togar2.pvp.feature.provider.DifficultyProvider;
 import io.github.togar2.pvp.utils.CombatVersion;
-import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -57,6 +59,10 @@ public class Server {
         }
         MinestomPvP.init();
 
+        MinecraftServer.getBlockManager().registerHandler("minecraft:chest", Chest::new);
+        MinecraftServer.getBlockManager().registerHandler("minecraft:ender_chest", EnderChest::new);
+        MinecraftServer.getBlockManager().registerHandler("minecraft:beehive", Beehive::new);
+
         CombatFeatureSet modernVanilla = CombatFeatures.getVanilla(CombatVersion.MODERN, DifficultyProvider.DEFAULT)
                 .remove(FeatureType.FOOD)
                 .remove(FeatureType.EXHAUSTION)
@@ -89,12 +95,13 @@ public class Server {
             ItemGen.item(posIrGoSpawner, instanceContainer, materials[1]);
             return TaskSchedule.seconds(3);
         });
-        // Register Events (set spawn instance, teleport player at spawn)
-        // Start the server
+
         CoreGame.createTeams();
         npcs = CoreGame.summonNPCs(instanceContainer);
         CoreGame.generateLobbySidebar();
+
         MinecraftServer.getCommandManager().register(new SkipLobby());
+        MinecraftServer.setBrandName("BaedWars");
         minecraftServer.start("0.0.0.0", 25545);
     }
 }

@@ -47,6 +47,7 @@ public class CoreGame {
     public static Sidebar lobbySidebar;
     public static int playersPerTeams = generateGameTypeData()[0];
     public static int teamsAmount = generateGameTypeData()[1];
+    public static final Component serverPrefix = Component.text("[").color(GRAY).append(Component.text("BaedWars").color(NamedTextColor.AQUA), Component.text("] ").color(GRAY));
     public static void startGame(Scheduler scheduler) {
         int countdownDuration = 5;
         AtomicInteger counter = new AtomicInteger();
@@ -273,7 +274,6 @@ public class CoreGame {
                 Component.text("Players: " + totalPlayers + "/" + playersPerTeams*teamsAmount)
         );
     }
-
     public static NPC[] summonNPCs(InstanceContainer instance) {
         String skinTexture = "ewogICJ0aW1lc3RhbXAiIDogMTYxODg3Mzc5NzAxMCwKICAicHJvZmlsZUlkIiA6ICI2MWVhMDkyM2FhNDQ0OTEwYmNlZjViZmQ2ZDNjMGQ1NyIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVEYXJ0aEZhdGhlciIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jZGUzZjg4ZjFhZjRhMzEwZTIxNDgyYzU5NmY3ZTQzOTU0MmZlN2JhMjJmZjE1M2M3NWZjNGM2Yjg4NDVjYjM3IgogICAgfQogIH0KfQ==";
         String skinSignature = "h3FaOC0oipvtoiRFPyLj+j5r7OXQaUwSWnK9m148/n2O+Uvek7KOt4I1aVXAdDVGpJ1TvXHzBYjNYaXs69Y0WGLY2KwxtHIFh0YNeFLREH37dngRrqyTyp/hi2ZiolRLeGQgaLOMl5qMKFKbPKExAUntZCzNntYjtdsdA9ZyYreE8pZN4GEpuXBB/HiT7CGfUXlLlxGqd0NAISO6sQ7Sz9DHFvZi2nQBLjMjAhtdDeyE+XhUgmesyBTPktccxDkB4bPljuPb/1ZgQSxGVKFRie/Y7xGYk+LFEQ2p7HyIXJaZvUVda80WVyzExNZ3SgN/KCqml96MxtXzYeAaCEUAVUZt0YlWQljhPgVqtOIpPpMNMliYS7WncLrGzI5dDuDPn++IYxiySQepSczbHZTjeV4mvyXiyeMK0d4IQW51W4tE/B8OZAE52rhFICN7P9mCtUBnvPF82HMkyyWgLJcaeguy+LVcOSoMJp0/lZMMzQCsTJPzLBxCSp4ujrulC0C9/vsbezx8LGbTMqul6erqMl6MeAGLvNlyzZhMGiD5SmBwOEHDNjPV4hK0pll9T4G8qgTGaU3SmcEU6/x35o5VMnluTv6+yr7xTQekK5jz5Ae62fClh4lOJr3CJLVLJqPU60+Gpe0FcMun1sn8MPwmTwAQAdDjpQ2Dkx5f4/B9i4I=";
