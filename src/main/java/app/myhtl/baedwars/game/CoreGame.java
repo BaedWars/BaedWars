@@ -8,7 +8,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
-import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.adventure.audience.Audiences;
 import net.minestom.server.coordinate.Pos;
@@ -34,7 +33,6 @@ import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.tag.Tag;
 import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
-import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import static app.myhtl.baedwars.Server.round_id;
@@ -47,18 +45,11 @@ public class CoreGame {
     public static Sidebar lobbySidebar;
     public static int playersPerTeams = generateGameTypeData()[0];
     public static int teamsAmount = generateGameTypeData()[1];
+    public static int totalPlayers = 0;
     public static final Component serverPrefix = Component.text("[").color(GRAY).append(Component.text("BaedWars").color(NamedTextColor.AQUA), Component.text("] ").color(GRAY));
     public static void startGame(Scheduler scheduler) {
         int countdownDuration = 5;
         AtomicInteger counter = new AtomicInteger();
-        int totalPlayers = 0;
-        for (Team team : teams) {
-            for (Player player : team.players) {
-                if (player != null) {
-                    totalPlayers++;
-                }
-            }
-        }
         if (totalPlayers != playersPerTeams*teamsAmount) {
             return;
         }
@@ -145,6 +136,7 @@ public class CoreGame {
         if (teams[randomTeamIndex].players[0] == null) {
             teams[randomTeamIndex].players[0] = player;
             teams[randomTeamIndex].playerUUIDs[0] = player.getUuid();
+            totalPlayers++;
             Server.logger.info("Player {} was assigned to the {} Team", player.getUsername(), teams[randomTeamIndex].color);
         } else {
             joinRandomTeam(player);
@@ -224,14 +216,6 @@ public class CoreGame {
         }
     }
     public static void generateLobbySidebar() {
-        int totalPlayers = 0;
-        for (Team team : teams) {
-            for (Player player : team.players) {
-                if (player != null) {
-                    totalPlayers++;
-                }
-            }
-        }
         lobbySidebar = new Sidebar(Component.text("    BED WARS    ").color(YELLOW).decorate(TextDecoration.BOLD));
         lobbySidebar.createLine(new Sidebar.ScoreboardLine(
                 "date&id",
