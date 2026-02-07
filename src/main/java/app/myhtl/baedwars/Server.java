@@ -95,7 +95,10 @@ public class Server {
             ItemGen.item(posIrGoSpawner, instanceContainer, materials[1]);
             return TaskSchedule.seconds(3);
         });
-
+        scheduler.submitTask(() -> {
+            ItemGen.cleanup(posIrGoSpawner, instanceContainer);
+            return TaskSchedule.seconds(10);
+        });
         CoreGame.createTeams();
         npcs = CoreGame.summonNPCs(instanceContainer);
         CoreGame.generateLobbySidebar();
