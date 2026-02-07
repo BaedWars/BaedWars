@@ -14,7 +14,7 @@ import net.minestom.server.timer.Scheduler;
 public class AllEventListener {
     public static EventNode<?> getPlayerEvent(InstanceContainer instanceContainer, Scheduler scheduler) {
         EventNode<PlayerEvent> playerNode = EventNode.type("all-playernode", EventFilter.PLAYER);
-        playerNode.addListener(AsyncPlayerConfigurationEvent.class, event -> SetSpawn.handle(event, instanceContainer));
+        playerNode.addListener(AsyncPlayerConfigurationEvent.class, event -> SetSpawn.handle(event, instanceContainer, scheduler));
         playerNode.addListener(InventoryPreClickEvent.class, ItemShop::handle);
         playerNode.addListener(InventoryPreClickEvent.class, TeamShop::handle);
         return playerNode;

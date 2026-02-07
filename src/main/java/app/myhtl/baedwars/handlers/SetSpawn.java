@@ -7,14 +7,17 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.instance.InstanceContainer;
 import app.myhtl.baedwars.Server;
+import net.minestom.server.timer.Scheduler;
+
 import java.awt.*;
 import java.util.Objects;
 
 import static app.myhtl.baedwars.game.CoreGame.getSpawnPos;
+import static app.myhtl.baedwars.game.CoreGame.killPlayer;
 
 
 public class SetSpawn {
-    public static void handle(AsyncPlayerConfigurationEvent event, InstanceContainer instanceContainer) {
+    public static void handle(AsyncPlayerConfigurationEvent event, InstanceContainer instanceContainer, Scheduler scheduler) {
         final Player player = event.getPlayer();
         event.setSpawningInstance(instanceContainer);
         if (!Server.gameStarted) {
@@ -25,7 +28,7 @@ public class SetSpawn {
             }
             player.setRespawnPoint(getSpawnPos(player));
         } else {
-            player.setGameMode(GameMode.SPECTATOR);
+            killPlayer(player, scheduler);
         }
     }
 }
