@@ -14,7 +14,7 @@ public class EnderChest implements BlockHandler {
     @Override
     public boolean onInteract(Interaction interaction) {
         Player player = interaction.getPlayer();
-        player.openInventory(Team.getTeamFromPlayer(player).inv);
+        player.openInventory(Team.getTeamFromPlayer(player).enderChests.get(player.getUuid()));
         return true;
     }
 

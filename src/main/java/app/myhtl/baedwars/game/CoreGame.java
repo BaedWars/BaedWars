@@ -24,6 +24,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import app.myhtl.baedwars.Server;
+import net.minestom.server.inventory.Inventory;
+import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.inventory.PlayerInventory;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
@@ -136,6 +138,7 @@ public class CoreGame {
         if (teams[randomTeamIndex].players[0] == null) {
             teams[randomTeamIndex].players[0] = player;
             teams[randomTeamIndex].playerUUIDs[0] = player.getUuid();
+            teams[randomTeamIndex].enderChests.put(player.getUuid(), new Inventory(InventoryType.CHEST_3_ROW, Component.text("Ender Chest")));
             totalPlayers++;
             Server.logger.info("Player {} was assigned to the {} Team", player.getUsername(), teams[randomTeamIndex].color);
         } else {

@@ -8,6 +8,8 @@ import net.minestom.server.inventory.Inventory;
 import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.scoreboard.Sidebar;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,7 +23,8 @@ public class Team {
     public Player[] players;
     public UUID[] playerUUIDs;
     public Sidebar sidebar;
-    public Inventory inv = new Inventory(InventoryType.CHEST_3_ROW, Component.text("Ender Chest"));
+    public Inventory teamChest = new Inventory(InventoryType.CHEST_3_ROW, Component.text("Team Chest"));
+    public Dictionary<UUID, Inventory> enderChests = new Hashtable<>();
 
     public static Team getTeamFromPlayer(Player player) {
         for (Team team : teams) {
