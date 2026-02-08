@@ -29,7 +29,7 @@ public class ItemShop {
 
     public static void handle(InventoryPreClickEvent event) {
         AbstractInventory inventory = event.getInventory();
-        if (!inventory.getItemStack(9).hasTag(Tag.String("TITLE"))) {
+        if (!inventory.hasTag(Tag.String("TITLE"))) {
             return;
         }
 
