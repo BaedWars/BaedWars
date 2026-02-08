@@ -9,12 +9,15 @@ public class BuyableItem {
     public final String description;
     public final int price;
     public final Material priceItem;
-    public BuyableItem(String itemID, int quantity, String displayName, String description, int price, String PriceItemID) {
+    public final boolean permanent;
+
+    public BuyableItem(String itemID, int quantity, String displayName, String description, int price, String PriceItemID, boolean permanent) {
         this.displayName = displayName;
         this.item = Material.fromKey(itemID.toLowerCase());
         this.quantity = quantity;
         this.description = description;
         this.price = price;
         this.priceItem = Material.fromKey(PriceItemID.toLowerCase());
+        this.permanent = permanent;
     }
 }

@@ -22,7 +22,6 @@ import static app.myhtl.baedwars.game.ShopCategory.getCategoryFromTitle;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 public class ItemShop {
-    // Beispiel GUIs
     public static void openShop(Player player) {
         ShopCategory currentCategory = Server.itemShopData[0];
         player.openInventory(generateInventory(currentCategory, 0));
@@ -41,7 +40,6 @@ public class ItemShop {
         }
         event.setCancelled(true);
     }
-
     private static void buyItem(int itemIndex, Player player, String categoryTitle) {
         ShopCategory category = getCategoryFromTitle(categoryTitle);
         BuyableItem currentItem = category.buyableItems[itemIndex];
@@ -67,7 +65,6 @@ public class ItemShop {
         }
         player.sendMessage(Component.text("You don't have enough " + currentItem.priceItem.toString().replace("minecraft:", "") + "s!").color(RED));
     }
-
     private static void changeCategory(int slot, Player player, AbstractInventory currentInventory) {
         if (currentInventory.getItemStack(slot).material() != Material.AIR) {
             ShopCategory currentCategory = Server.itemShopData[slot];
@@ -93,7 +90,6 @@ public class ItemShop {
         }
         for (int i = 0; i < currentCategory.buyableItems.length; i++) {
             BuyableItem buyableItem = currentCategory.buyableItems[i];
-            System.out.println(buyableItem);
             int[] usableSlots = new int[]{19,20,21,22,23,24,25,28,29,30,31,32,33,34};
             TextColor currencyColor = GRAY;
             String currencyName = buyableItem.priceItem.toString();

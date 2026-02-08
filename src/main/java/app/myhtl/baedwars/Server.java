@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class Server {
@@ -36,6 +37,7 @@ public class Server {
     public static boolean gameStarted = false;
     public static World map;
     public static NPC[] npcs;
+    public static HashSet<BuyableItem> permanentItems = new HashSet<>();
     public static ShopCategory[] itemShopData = CoreGame.loadItemShopData();
     public static String round_id = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
 
@@ -76,6 +78,7 @@ public class Server {
         // Add an event callback to specify the spawning instance (and the spawn position)
         instanceContainer.setChunkLoader(new AnvilLoader(map.savePath));
         instanceContainer.setExplosionSupplier(modernVanilla.get(FeatureType.EXPLOSION).getExplosionSupplier());
+        instanceContainer.setTimeRate(0);
         var handler = MinecraftServer.getGlobalEventHandler();
         handler.addChild(modernVanilla.createNode());
         handler.addChild(AllEventListener.getPlayerEvent(instanceContainer, scheduler));
@@ -85,20 +88,26 @@ public class Server {
         handler.addChild(BedwarsEventListener.getPlayerEvent(scheduler));
         handler.addChild(SpectatorEventListener.getPlayerEvent());
 
-        Material[] materials = new Material[]{Material.IRON_INGOT, Material.GOLD_INGOT, Material.DIAMOND};
         Pos[] posIrGoSpawner = new Pos[]{new Pos(-56.5, 60.5, -69.5),new Pos(29.5, 60.5, 32.5)};
+        Pos[] posDiaSpawner = new Pos[]{new Pos(-49.5, 61.5, -14.5), new Pos(22.5, 61.5, -22.5)};
         scheduler.submitTask(() -> {
-            ItemGen.item(posIrGoSpawner, instanceContainer, materials[0]);
-            return TaskSchedule.millis(500);
+            ItemGen.item(posIrGoSpawner, instanceContainer, Material.IRON_INGOT);
+            return TaskSchedule.millis(1500);
         });
         scheduler.submitTask(() -> {
-            ItemGen.item(posIrGoSpawner, instanceContainer, materials[1]);
-            return TaskSchedule.seconds(3);
+            ItemGen.item(posIrGoSpawner, instanceContainer, Material.GOLD_INGOT);
+            return TaskSchedule.seconds(6);
+        });
+        scheduler.submitTask(() -> {
+            ItemGen.item(posDiaSpawner, instanceContainer, Material.DIAMOND);
+            return TaskSchedule.seconds(15);
         });
         scheduler.submitTask(() -> {
             ItemGen.cleanup(posIrGoSpawner, instanceContainer);
+            ItemGen.cleanup(posDiaSpawner, instanceContainer);
             return TaskSchedule.seconds(10);
         });
+
         CoreGame.createTeams();
         npcs = CoreGame.summonNPCs(instanceContainer);
         CoreGame.generateLobbySidebar();

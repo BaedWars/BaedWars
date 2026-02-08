@@ -37,6 +37,7 @@ import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
 import org.yaml.snakeyaml.Yaml;
 
+import static app.myhtl.baedwars.Server.permanentItems;
 import static app.myhtl.baedwars.Server.round_id;
 import static app.myhtl.baedwars.game.Team.getTeamFromPlayer;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
@@ -330,7 +331,11 @@ public class CoreGame {
                                 String itemDescription = (String) mappedItem.get("description");
                                 int itemPrice = (int) mappedItem.get("price");
                                 String itemPriceItemID = (String) mappedItem.get("price_item");
-                                buyableItems[j] = new BuyableItem(itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID);
+                                boolean permanent = (boolean) mappedItem.get("permanent");
+                                buyableItems[j] = new BuyableItem(itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID, permanent);
+                                if (permanent) {
+                                    permanentItems.add(buyableItems[j]);
+                                }
                             }
                         }
                     }

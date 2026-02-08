@@ -9,84 +9,98 @@ categories:
         description: "A basic building block in Bedwars. Can be easily destroyed by explosions"
         price: 4
         price_item: "IRON_INGOT"
+        permanent: false
       - id: STONE_SWORD
         display_name: "Stone Sword"
         quantity: 1
         description: "More damage = more better. Not permanent"
         price: 10
         price_item: "IRON_INGOT"
+        permanent: false
       - id: CHAINMAIL_BOOTS
         display_name: "Permanent Chainmail Armor"
         quantity: 1
         description: "Protects you, it's Armor!"
         price: 24
         price_item: "IRON_INGOT"
+        permanent: true
       - id: WOODEN_PICKAXE
         display_name: "Wooden Pickaxe"
         quantity: 1
         description: "It's not much, but it's honest work"
         price: 10
         price_item: "IRON_INGOT"
+        permanent: false
       - id: BOW
         display_name: "Bow"
         quantity: 1
         description: ""
         price: 12
         price_item: "GOLD_INGOT"
+        permanent: false
       - id: POTION
         display_name: "Speed II Potion"
         quantity: 1
-        description: "Not to be confused with speed in powder form"
+        description: "Very efficient at it's job"
         price: 1
         price_item: "EMERALD"
+        permanent: false
       - id: TNT
         display_name: "TNT"
         quantity: 1
         description: "Perfect for exploding things"
         price: 8
         price_item: "GOLD_INGOT"
+        permanent: false
       - id: OAK_PLANKS
         display_name: "Wood"
         quantity: 16
         description: "Strong against pickaxes."
         price: 4
         price_item: "GOLD_INGOT"
+        permanent: false
       - id: IRON_SWORD
         display_name: "Iron Sword"
         quantity: 1
         description: "More damage = more better. Not permanent"
         price: 7
         price_item: "GOLD_INGOT"
+        permanent: false
       - id: IRON_BOOTS
         display_name: "Permanent Iron Armor"
         quantity: 1
         description: "Protects you, it's Armor!"
         price: 12
         price_item: "GOLD_INGOT"
+        permanent: true
       - id: SHEARS
         display_name: "Permanent Shears"
         quantity: 1
         description: "Shears are great in removing wool!"
         price: 20
         price_item: "IRON_INGOT"
+        permanent: true
       - id: ARROW
         display_name: "Arrow"
         quantity: 6
         description: "A kind of ammo, I guess"
         price: 2
         price_item: "GOLD_INGOT"
+        permanent: false
       - id: POTION
         display_name: "Invisibility Potion"
         quantity: 1
         description: "Your sword doesn't get Invisibility"
         price: 2
         price_item: "EMERALD"
+        permanent: false
       - id: WATER_BUCKET
         display_name: "Water Bucket"
         quantity: 1
         description: "I think you know what water is."
         price: 3
         price_item: "GOLD_INGOT"
+        permanent: false
   - index: 2
     icon: "TERRACOTTA"
     display_name: "Blocks"
@@ -97,27 +111,32 @@ categories:
         description: "A basic building block in Bedwars. Can be easily destroyed by explosions"
         price: 4
         price_item: "IRON_INGOT"
+        permanent: false
       - id: TERRACOTTA
         display_name: "Hardened Clay"
         quantity: 16
         description: "Cheaper and better at defending the bed than wool"
         price: 12
         price_item: "IRON_INGOT"
+        permanent: false
       - id: GLASS
         display_name: "Blast-Proof Glass"
         quantity: 16
         description: "Fun Fact: Ice Cream means in Swedish 'Glass'"
         price: 12
         price_item: "IRON_INGOT"
+        permanent: false
       - id: END_STONE
         display_name: "End Stone"
         quantity: 12
         description: "Good at defending a bed"
         price: 24
         price_item: "IRON_INGOT"
+        permanent: false
       - id: LADDER
         display_name: "Ladder"
         quantity: 8
         description: "It's not the same as the BEKVÄM from IKEA"
         price: 4
         price_item: "IRON_INGOT"
+        permanent: false
