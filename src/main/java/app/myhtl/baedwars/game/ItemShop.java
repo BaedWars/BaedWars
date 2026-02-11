@@ -44,26 +44,30 @@ public class ItemShop {
         ShopCategory category = getCategoryFromTitle(categoryTitle);
         BuyableItem currentItem = category.buyableItems[itemIndex];
         PlayerInventory inventory = player.getInventory();
-        for (int i=0; i<player.getInventory().getItemStacks().length-1; i++) {
-            ItemStack stack = player.getInventory().getItemStack(i);
-            if (stack.material() == currentItem.priceItem && stack.amount() >= currentItem.price) {
-                if (currentItem.toString().toLowerCase().endsWith("helmet")) {
-                    inventory.setItemStack(5, ItemStack.of(stack.material(), stack.amount() - currentItem.price));
+
+        if (CoreGame.getFreePlayerInvSlots(player) > 0) {
+            if (CoreGame.delFromPlayerInv(player, ItemStack.of(currentItem.priceItem, currentItem.price))) {
+                if (currentItem.armorMaterial != null) {
+                    var helmetMaterial = Material.fromKey(currentItem.armorMaterial.toLowerCase() + "_helmet");
+                    var chestplateMaterial = Material.fromKey(currentItem.armorMaterial.toLowerCase() + "_chestplate");
+                    var leggingsMaterial = Material.fromKey(currentItem.armorMaterial.toLowerCase() + "_leggings");
+                    var bootsMaterial = Material.fromKey(currentItem.armorMaterial.toLowerCase() + "_boots");
+                    player.setHelmet(ItemStack.of(helmetMaterial));
+                    player.setChestplate(ItemStack.of(chestplateMaterial));
+                    player.setLeggings(ItemStack.of(leggingsMaterial));
+                    player.setBoots(ItemStack.of(bootsMaterial));
+                } else if (currentItem.placeholderItem != null) {
+                    var itemMaterial = Material.fromKey(currentItem.placeholderItem.replace("color", Team.getTeamFromPlayer(player).color).toLowerCase());
+                    inventory.addItemStack(ItemStack.of(itemMaterial, currentItem.quantity));
                 } else {
-                    if (CoreGame.addToPlayerInv(player, ItemStack.of(currentItem.item, currentItem.quantity))) {
-                        if (stack.amount() > currentItem.price) {
-                            inventory.setItemStack(i, ItemStack.of(stack.material(), stack.amount() - currentItem.price));
-                        } else {
-                            inventory.setItemStack(i, ItemStack.AIR);
-                        }
-                    } else {
-                        player.sendMessage(Component.text("No empty slots left!").color(RED));
-                    }
-                    return;
+                    inventory.addItemStack(ItemStack.of(currentItem.item, currentItem.quantity));
                 }
+            } else {
+                player.sendMessage(Component.text("You don't have enough " + currentItem.priceItem.toString().replace("minecraft:", "") + "s!").color(RED));
             }
+        } else {
+            player.sendMessage(Component.text("No empty slots left!").color(RED));
         }
-        player.sendMessage(Component.text("You don't have enough " + currentItem.priceItem.toString().replace("minecraft:", "") + "s!").color(RED));
     }
     private static void changeCategory(int slot, Player player, AbstractInventory currentInventory) {
         if (currentInventory.getItemStack(slot).material() != Material.AIR) {

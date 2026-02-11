@@ -3,7 +3,7 @@ categories:
     icon: "NETHER_STAR"
     display_name: "Quick Buy"
     items:
-      - id: WHITE_WOOL
+      - id: COLOR_WOOL
         display_name: "White Wool"
         quantity: 16
         description: "A basic building block in Bedwars. Can be easily destroyed by explosions"
@@ -19,6 +19,7 @@ categories:
         permanent: false
       - id: CHAINMAIL_BOOTS
         display_name: "Permanent Chainmail Armor"
+        armor_material: CHAINMAIL
         quantity: 1
         description: "Protects you, it's Armor!"
         price: 24
@@ -68,6 +69,7 @@ categories:
         permanent: false
       - id: IRON_BOOTS
         display_name: "Permanent Iron Armor"
+        armor_material: IRON
         quantity: 1
         description: "Protects you, it's Armor!"
         price: 12
@@ -105,7 +107,7 @@ categories:
     icon: "TERRACOTTA"
     display_name: "Blocks"
     items:
-      - id: WHITE_WOOL
+      - id: COLOR_WOOL
         display_name: "White Wool"
         quantity: 16
         description: "A basic building block in Bedwars. Can be easily destroyed by explosions"

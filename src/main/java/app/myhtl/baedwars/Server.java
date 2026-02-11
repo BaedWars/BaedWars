@@ -1,6 +1,7 @@
 package app.myhtl.baedwars;
 
 import app.myhtl.baedwars.commands.SkipLobby;
+import app.myhtl.baedwars.handlers.blocks.Bed;
 import app.myhtl.baedwars.handlers.blocks.Beehive;
 import app.myhtl.baedwars.handlers.blocks.Chest;
 import app.myhtl.baedwars.handlers.blocks.EnderChest;
@@ -20,6 +21,7 @@ import net.minestom.server.instance.anvil.AnvilLoader;
 import app.myhtl.baedwars.listeners.*;
 import app.myhtl.baedwars.game.*;
 import app.myhtl.baedwars.game.ItemGen;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.Material;
 import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
@@ -40,6 +42,12 @@ public class Server {
     public static HashSet<BuyableItem> permanentItems = new HashSet<>();
     public static ShopCategory[] itemShopData = CoreGame.loadItemShopData();
     public static String round_id = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
+    public static final Block[] bedArray = new Block[]{
+            Block.BLACK_BED, Block.BLUE_BED, Block.BROWN_BED, Block.CYAN_BED,
+            Block.GRAY_BED, Block.GREEN_BED, Block.LIGHT_BLUE_BED, Block.LIGHT_GRAY_BED,
+            Block.LIME_BED, Block.MAGENTA_BED, Block.ORANGE_BED, Block.PINK_BED,
+            Block.PURPLE_BED, Block.RED_BED, Block.WHITE_BED, Block.YELLOW_BED
+    };
 
     static {
         try {
@@ -64,6 +72,7 @@ public class Server {
         MinecraftServer.getBlockManager().registerHandler("minecraft:chest", Chest::new);
         MinecraftServer.getBlockManager().registerHandler("minecraft:ender_chest", EnderChest::new);
         MinecraftServer.getBlockManager().registerHandler("minecraft:beehive", Beehive::new);
+        MinecraftServer.getBlockManager().registerHandler("minecraft:bed", Bed::new);
 
         CombatFeatureSet modernVanilla = CombatFeatures.getVanilla(CombatVersion.MODERN, DifficultyProvider.DEFAULT)
                 .remove(FeatureType.FOOD)
@@ -79,6 +88,7 @@ public class Server {
         instanceContainer.setChunkLoader(new AnvilLoader(map.savePath));
         instanceContainer.setExplosionSupplier(modernVanilla.get(FeatureType.EXPLOSION).getExplosionSupplier());
         instanceContainer.setTimeRate(0);
+        instanceContainer.setTime(6000);
         var handler = MinecraftServer.getGlobalEventHandler();
         handler.addChild(modernVanilla.createNode());
         handler.addChild(AllEventListener.getPlayerEvent(instanceContainer, scheduler));

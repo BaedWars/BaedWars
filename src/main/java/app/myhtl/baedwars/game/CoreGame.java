@@ -197,10 +197,10 @@ public class CoreGame {
                     if (player.getGameMode() != GameMode.SURVIVAL && team.alivePlayers > 0) {
                         team.alivePlayers--;
                     }
-                    if (team.alivePlayers == 0) {
-                        stopGame(scheduler);
-                    }
                 }
+            }
+            if (team.alivePlayers == 0) {
+                stopGame(scheduler);
             }
             String colorString = team.color.substring(0, 1).toUpperCase() + team.color.substring(1).toLowerCase();
             Component mainComponent = Component.text(team.color.toUpperCase().charAt(0)).color(NamedTextColor.NAMES.value(team.color.toLowerCase())).append(Component.text(" " + colorString + ":").color(WHITE));
@@ -331,9 +331,16 @@ public class CoreGame {
                                 String itemDescription = (String) mappedItem.get("description");
                                 int itemPrice = (int) mappedItem.get("price");
                                 String itemPriceItemID = (String) mappedItem.get("price_item");
-                                boolean permanent = (boolean) mappedItem.get("permanent");
-                                buyableItems[j] = new BuyableItem(itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID, permanent);
-                                if (permanent) {
+
+                                boolean permanent = false;
+                                if (mappedItem.get("permanent") instanceof Boolean b) permanent = b;
+
+                                boolean isArmorSet = mappedItem.containsKey("armor_material");
+                                String armorMaterial = isArmorSet ? (String) mappedItem.get("armor_material") : null;
+
+                                buyableItems[j] = new BuyableItem(armorMaterial, itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID, permanent);
+
+                                if (buyableItems[j].permanent) {
                                     permanentItems.add(buyableItems[j]);
                                 }
                             }
@@ -376,7 +383,7 @@ public class CoreGame {
             return TaskSchedule.stop();
         });
     }
-    public static boolean addToPlayerInv(Player player, ItemStack itemStack) {
+    public static int getFreePlayerInvSlots(Player player) {
         int emptySlot = 0;
         PlayerInventory inv = player.getInventory();
         for (int i=0; i<inv.getItemStacks().length-1; i++) {
@@ -386,9 +393,25 @@ public class CoreGame {
             }
         }
         if (emptySlot <= 9) {
-            return false;
+            return 0;
         }
-        inv.addItemStack(itemStack);
-        return true;
+        return emptySlot - 9;
+    }
+    public static boolean delFromPlayerInv(Player player, ItemStack delStack) {
+        PlayerInventory inv = player.getInventory();
+        for (int i=0; i<inv.getItemStacks().length-1; i++) {
+            ItemStack stack = inv.getItemStack(i);
+            if (stack.material() == delStack.material()) {
+                if (stack.amount() > delStack.amount()) {
+                    inv.setItemStack(i, stack.withAmount(stack.amount() - delStack.amount()));
+                } else if (stack.amount() == delStack.amount()) {
+                    inv.setItemStack(i, ItemStack.AIR);
+                } else {
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }
