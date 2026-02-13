@@ -20,6 +20,7 @@ public class SetSpawn {
     public static void handle(AsyncPlayerConfigurationEvent event, InstanceContainer instanceContainer, Scheduler scheduler) {
         final Player player = event.getPlayer();
         event.setSpawningInstance(instanceContainer);
+        player.setPermissionLevel(Server.permissionData.get(player.getUuid()));
         if (!Server.gameStarted) {
             player.setGameMode(GameMode.ADVENTURE);
             //player.setGameMode(GameMode.CREATIVE);

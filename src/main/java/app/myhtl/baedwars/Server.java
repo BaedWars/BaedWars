@@ -5,6 +5,8 @@ import app.myhtl.baedwars.handlers.blocks.Bed;
 import app.myhtl.baedwars.handlers.blocks.Beehive;
 import app.myhtl.baedwars.handlers.blocks.Chest;
 import app.myhtl.baedwars.handlers.blocks.EnderChest;
+import app.myhtl.baedwars.loaders.ConfigLoader;
+import app.myhtl.baedwars.loaders.ShopLoader;
 import io.github.togar2.pvp.MinestomPvP;
 import io.github.togar2.pvp.feature.CombatFeatureSet;
 import io.github.togar2.pvp.feature.CombatFeatures;
@@ -32,6 +34,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Server {
@@ -40,14 +44,15 @@ public class Server {
     public static World map;
     public static NPC[] npcs;
     public static HashSet<BuyableItem> permanentItems = new HashSet<>();
-    public static ShopCategory[] itemShopData = CoreGame.loadItemShopData();
+    public static ShopCategory[] itemShopData = ShopLoader.loadItemShopData();
+    public static Map<UUID, Integer> permissionData = ConfigLoader.loadPermissionData();
     public static String round_id = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
-    public static final Block[] bedArray = new Block[]{
+    public static final List<Block> bedList = List.of(
             Block.BLACK_BED, Block.BLUE_BED, Block.BROWN_BED, Block.CYAN_BED,
             Block.GRAY_BED, Block.GREEN_BED, Block.LIGHT_BLUE_BED, Block.LIGHT_GRAY_BED,
             Block.LIME_BED, Block.MAGENTA_BED, Block.ORANGE_BED, Block.PINK_BED,
             Block.PURPLE_BED, Block.RED_BED, Block.WHITE_BED, Block.YELLOW_BED
-    };
+    );
 
     static {
         try {

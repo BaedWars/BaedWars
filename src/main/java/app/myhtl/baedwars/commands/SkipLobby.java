@@ -19,18 +19,20 @@ public class SkipLobby extends Command {
     public SkipLobby() {
         super("skip");
         setDefaultExecutor((sender, context) -> {
-            if (Objects.equals(sender.identity().uuid().toString(), "54912342-edf2-4833-a217-bc25b418422a")) {
-                sender.sendMessage(CoreGame.serverPrefix.append(Component.text("Lobby has been skipped")));
-                Server.gameStarted = true;
-                Audiences.players().clearTitle();
-                for (Team team : teams) {
-                    for (Player player : team.players) {
-                        if (player != null) {
-                            player.teleport(team.spawnPos);
-                            player.setGameMode(GameMode.SURVIVAL);
-                            player.setInvisible(false);
-                            CoreGame.lobbySidebar.removeViewer(player);
-                            Team.getTeamFromPlayer(player).sidebar.addViewer(player);
+            if (sender instanceof Player senderP) {
+                if (senderP.getPermissionLevel() >= 2) {
+                    sender.sendMessage(CoreGame.serverPrefix.append(Component.text("Lobby has been skipped")));
+                    Server.gameStarted = true;
+                    Audiences.players().clearTitle();
+                    for (Team team : teams) {
+                        for (Player player : team.players) {
+                            if (player != null) {
+                                player.teleport(team.spawnPos);
+                                player.setGameMode(GameMode.SURVIVAL);
+                                player.setInvisible(false);
+                                CoreGame.lobbySidebar.removeViewer(player);
+                                Team.getTeamFromPlayer(player).sidebar.addViewer(player);
+                            }
                         }
                     }
                 }

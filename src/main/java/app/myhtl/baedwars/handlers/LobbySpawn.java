@@ -19,6 +19,7 @@ public class LobbySpawn {
                 Component.text("(").color(WHITE),
                 Component.text(CoreGame.totalPlayers).color(AQUA), Component.text("/").color(WHITE), Component.text(CoreGame.playersPerTeams*CoreGame.teamsAmount).color(AQUA),
                 Component.text(")").color(WHITE)));
+        Server.logger.info("Player {} has joined BedWars Lobby #{} ({}/{})", player.getUsername(), Server.round_id, CoreGame.totalPlayers, CoreGame.playersPerTeams*CoreGame.teamsAmount);
         CoreGame.startGame(scheduler);
     }
     public static void handleEverthing(CancellableEvent event) {

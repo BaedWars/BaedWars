@@ -56,6 +56,7 @@ public class CoreGame {
         if (totalPlayers != playersPerTeams*teamsAmount) {
             return;
         }
+        Server.logger.info("Game #{} has been started! ({}/{})", round_id, totalPlayers, playersPerTeams*teamsAmount);
         scheduler.submitTask(() -> {
             Audiences.players().sendMessage(Component.text("The game starts in ").color(YELLOW).append(Component.text(countdownDuration - counter.get()).color(RED)).append(Component.text(" seconds!").color(YELLOW)));
             counter.getAndIncrement();
@@ -141,7 +142,6 @@ public class CoreGame {
             teams[randomTeamIndex].playerUUIDs[0] = player.getUuid();
             teams[randomTeamIndex].enderChests.put(player.getUuid(), new Inventory(InventoryType.CHEST_3_ROW, Component.text("Ender Chest")));
             totalPlayers++;
-            Server.logger.info("Player {} was assigned to the {} Team", player.getUsername(), teams[randomTeamIndex].color);
         } else {
             joinRandomTeam(player);
         }
@@ -299,65 +299,13 @@ public class CoreGame {
     public static Pos getSpawnPos(Player player) {
         return getTeamFromPlayer(player).spawnPos;
     }
-
-    public static ShopCategory[] loadItemShopData() {
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream("itemShop.yml");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        Yaml yaml = new Yaml();
-        Map<String, Object> rawData = yaml.load(inputStream);
-        ShopCategory[] shopCategories = new ShopCategory[0];
-        if (rawData.values().toArray()[0] instanceof ArrayList<?> rawCategories) {
-            shopCategories = new ShopCategory[rawCategories.size()];
-            for (int i=0; i<rawCategories.size(); i++) {
-                Object rawCategory = rawCategories.get(i);
-                if (rawCategory instanceof LinkedHashMap<?, ?> mappedCategory) {
-                    int catIndex = (int) mappedCategory.get("index");
-                    String catIconID = (String) mappedCategory.get("icon");
-                    String catDisplayName = (String) mappedCategory.get("display_name");
-                    BuyableItem[] buyableItems = new BuyableItem[0];
-                    if (mappedCategory.get("items") instanceof ArrayList<?> rawItems) {
-                        buyableItems = new BuyableItem[rawItems.size()];
-                        for (int j=0; j<rawItems.size();j++) {
-                            Object rawItem = rawItems.get(j);
-                            if (rawItem instanceof LinkedHashMap<?, ?> mappedItem) {
-                                String itemID = (String) mappedItem.get("id");
-                                String itemDisplayName = (String) mappedItem.get("display_name");
-                                int itemQuantity = (int) mappedItem.get("quantity");
-                                String itemDescription = (String) mappedItem.get("description");
-                                int itemPrice = (int) mappedItem.get("price");
-                                String itemPriceItemID = (String) mappedItem.get("price_item");
-
-                                boolean permanent = false;
-                                if (mappedItem.get("permanent") instanceof Boolean b) permanent = b;
-
-                                boolean isArmorSet = mappedItem.containsKey("armor_material");
-                                String armorMaterial = isArmorSet ? (String) mappedItem.get("armor_material") : null;
-
-                                buyableItems[j] = new BuyableItem(armorMaterial, itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID, permanent);
-
-                                if (buyableItems[j].permanent) {
-                                    permanentItems.add(buyableItems[j]);
-                                }
-                            }
-                        }
-                    }
-                    shopCategories[i] = new ShopCategory(catIndex, catIconID, catDisplayName, buyableItems);
-                }
-            }
-        }
-        return shopCategories;
-    }
-
     public static void killPlayer(Player player, Scheduler scheduler) {
         int respawnDuration = 5;
         AtomicInteger counter = new AtomicInteger();
         Team team = getTeamFromPlayer(player);
-        player.teleport(new Pos(-13, 85, -18), new Vec(0));
+        try {
+            player.teleport(new Pos(-13, 85, -18), new Vec(0));
+        } catch (IllegalStateException ignored) {}
         player.setGameMode(GameMode.SPECTATOR);
         player.closeInventory();
         player.getInventory().clear();

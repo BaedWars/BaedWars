@@ -17,9 +17,10 @@ import net.minestom.server.timer.Scheduler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static app.myhtl.baedwars.Server.bedArray;
+import static app.myhtl.baedwars.Server.bedList;
 import static app.myhtl.baedwars.game.CoreGame.teams;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static net.kyori.adventure.text.format.NamedTextColor.WHITE;
@@ -30,29 +31,26 @@ public class BreakBlock {
         Block broken = event.getBlock().defaultState();
         Player player = event.getPlayer();
         Team destroyedTeam = null;
-        for (Team team: teams) {
-            if (broken.name().contains(team.color.toLowerCase())) {
-                destroyedTeam = team;
+        if (bedList.contains(broken)) {
+            for (Team team: teams) {
+                if (broken.name().contains(team.color.toLowerCase())) {
+                    destroyedTeam = team;
+                    break;
+                }
             }
-        }
-        if (destroyedTeam == null) {
-            event.setCancelled(true);
-            return;
-        }
-        for (Block bed : bedArray) {
-            if (broken == bed) {
+            if (destroyedTeam != null) {
                 for (Player teamplayer : destroyedTeam.players) {
-                    teamplayer.sendTitlePart(TitlePart.TITLE, Component.text("BED DESTROYED!").color(RED));
-                    teamplayer.sendTitlePart(TitlePart.SUBTITLE, Component.text("You will no longer respawn!").color(WHITE));
+                    if (teamplayer != null) {
+                        teamplayer.sendTitlePart(TitlePart.TITLE, Component.text("BED DESTROYED!").color(RED));
+                        teamplayer.sendTitlePart(TitlePart.SUBTITLE, Component.text("You will no longer respawn!").color(WHITE));
+                    }
                 }
                 destroyedTeam.bedDestroyed = true;
-                for (Team team: teams) {
+                for (Team team : teams) {
                     CoreGame.updateTeamSidebar(team, scheduler);
                 }
-                return;
             }
-        }
-        if (!event.getBlock().hasTag(Tag.Boolean("PlayerPlaced"))) {
+        } else if (!event.getBlock().hasTag(Tag.Boolean("PlayerPlaced"))) {
             player.sendMessage(Component.text("You can't break that!").color(RED));
             event.setCancelled(true);
         }

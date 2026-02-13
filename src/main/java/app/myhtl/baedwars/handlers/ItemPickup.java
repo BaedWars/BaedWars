@@ -13,7 +13,6 @@ public class ItemPickup {
     public static void handle(PickupItemEvent event) {
         if (event.getLivingEntity() instanceof Player player) {
             var inventory = player.getInventory();
-            System.out.println(CoreGame.getFreePlayerInvSlots(player));
             if (CoreGame.getFreePlayerInvSlots(player) <= 0 | player.getGameMode() == GameMode.SPECTATOR) {
                 event.setCancelled(true);
             } else {

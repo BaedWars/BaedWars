@@ -1,6 +1,5 @@
 package app.myhtl.baedwars.handlers;
 
-import app.myhtl.baedwars.game.CoreGame;
 import app.myhtl.baedwars.game.Team;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.trait.PlayerEvent;
