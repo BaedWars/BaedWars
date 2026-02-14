@@ -16,9 +16,6 @@ import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.InstanceContainer;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,15 +32,14 @@ import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.tag.Tag;
 import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
-import org.yaml.snakeyaml.Yaml;
 
-import static app.myhtl.baedwars.Server.permanentItems;
 import static app.myhtl.baedwars.Server.round_id;
 import static app.myhtl.baedwars.game.Team.getTeamFromPlayer;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 public class CoreGame {
     public static String gameType = "1v1";
+    public static Team spectatorTeam = new Team();
     public static Team[] teams;
     public static Sidebar lobbySidebar;
     public static int playersPerTeams = generateGameTypeData()[0];
@@ -136,7 +132,7 @@ public class CoreGame {
         }
     }
     public static void joinRandomTeam(Player player) {
-        int randomTeamIndex = (int) (Math.random() * ((teams.length)));
+        int randomTeamIndex = (int) (Math.random() * teams.length);
         if (teams[randomTeamIndex].players[0] == null) {
             teams[randomTeamIndex].players[0] = player;
             teams[randomTeamIndex].playerUUIDs[0] = player.getUuid();
@@ -145,6 +141,8 @@ public class CoreGame {
         } else {
             joinRandomTeam(player);
         }
+    }
+    public static void joinSpectatorTeam() {
     }
     public static Sidebar generateTeamSidebar(Team ownTeam) {
         Sidebar sidebar = new Sidebar(Component.text("    BED WARS    ").color(YELLOW).decorate(TextDecoration.BOLD));

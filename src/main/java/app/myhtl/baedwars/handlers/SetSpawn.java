@@ -9,27 +9,33 @@ import net.minestom.server.instance.InstanceContainer;
 import app.myhtl.baedwars.Server;
 import net.minestom.server.timer.Scheduler;
 
-import java.awt.*;
 import java.util.Objects;
 
 import static app.myhtl.baedwars.game.CoreGame.getSpawnPos;
-import static app.myhtl.baedwars.game.CoreGame.killPlayer;
 
 
 public class SetSpawn {
     public static void handle(AsyncPlayerConfigurationEvent event, InstanceContainer instanceContainer, Scheduler scheduler) {
         final Player player = event.getPlayer();
         event.setSpawningInstance(instanceContainer);
-        player.setPermissionLevel(Server.permissionData.get(player.getUuid()));
+        if (Server.permissionData.get(player.getUuid()) != null) {
+            player.setPermissionLevel(Server.permissionData.get(player.getUuid()));
+        }
+        player.setGameMode(GameMode.ADVENTURE);
+        //player.setGameMode(GameMode.CREATIVE);
         if (!Server.gameStarted) {
-            player.setGameMode(GameMode.ADVENTURE);
-            //player.setGameMode(GameMode.CREATIVE);
             if (Objects.equals(Team.getTeamFromPlayer(player).color, "")) {
                 CoreGame.joinRandomTeam(player);
             }
             player.setRespawnPoint(getSpawnPos(player));
+            Server.logger.info("Player {} has joined BedWars Lobby #{} ({}/{})",
+                    player.getUsername(), Server.round_id, CoreGame.totalPlayers, CoreGame.playersPerTeams*CoreGame.teamsAmount);
         } else {
-            killPlayer(player, scheduler);
+            Server.logger.info("Player {} has joined BedWars Game #{}",
+                    player.getUsername(), Server.round_id);
+            if (Objects.equals(Team.getTeamFromPlayer(player).color, "")) {
+                CoreGame.joinSpectatorTeam();
+            }
         }
     }
 }
