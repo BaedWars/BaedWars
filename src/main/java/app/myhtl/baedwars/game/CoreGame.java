@@ -52,7 +52,6 @@ public class CoreGame {
         if (totalPlayers != playersPerTeams*teamsAmount) {
             return;
         }
-        Server.logger.info("Game #{} has been started! ({}/{})", round_id, totalPlayers, playersPerTeams*teamsAmount);
         scheduler.submitTask(() -> {
             Audiences.players().sendMessage(Component.text("The game starts in ").color(YELLOW).append(Component.text(countdownDuration - counter.get()).color(RED)).append(Component.text(" seconds!").color(YELLOW)));
             counter.getAndIncrement();
@@ -72,6 +71,7 @@ public class CoreGame {
                     }
                 }
             }
+            Server.logger.info("Game #{} has been started! ({}/{})", round_id, totalPlayers, playersPerTeams*teamsAmount);
             return TaskSchedule.stop();
         });
     }

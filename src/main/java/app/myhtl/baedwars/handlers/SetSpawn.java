@@ -31,10 +31,13 @@ public class SetSpawn {
             Server.logger.info("Player {} has joined BedWars Lobby #{} ({}/{})",
                     player.getUsername(), Server.round_id, CoreGame.totalPlayers, CoreGame.playersPerTeams*CoreGame.teamsAmount);
         } else {
-            Server.logger.info("Player {} has joined BedWars Game #{}",
-                    player.getUsername(), Server.round_id);
             if (Objects.equals(Team.getTeamFromPlayer(player).color, "")) {
                 CoreGame.joinSpectatorTeam();
+                Server.logger.info("Player {} has rejoined BedWars Game #{}",
+                        player.getUsername(), Server.round_id);
+            } else {
+                Server.logger.info("Player {} has joined BedWars Game #{}",
+                        player.getUsername(), Server.round_id);
             }
         }
     }
