@@ -33,10 +33,10 @@ public class SetSpawn {
         } else {
             if (Objects.equals(Team.getTeamFromPlayer(player).color, "")) {
                 CoreGame.joinSpectatorTeam();
-                Server.logger.info("Player {} has rejoined BedWars Game #{}",
+                Server.logger.info("Player {} has joined BedWars Game #{}",
                         player.getUsername(), Server.round_id);
             } else {
-                Server.logger.info("Player {} has joined BedWars Game #{}",
+                Server.logger.info("Player {} has rejoined BedWars Game #{}",
                         player.getUsername(), Server.round_id);
             }
         }

@@ -44,7 +44,7 @@ public class Server {
     public static World map;
     public static NPC[] npcs;
     public static HashSet<BuyableItem> permanentItems = new HashSet<>();
-    public static ShopCategory[] itemShopData = ShopLoader.loadItemShopData();
+    public static List<ShopCategory> itemShopData = ShopLoader.loadItemShopData();
     public static Map<UUID, Integer> permissionData = ConfigLoader.loadPermissionData();
     public static String round_id = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
     public static final List<Block> bedList = List.of(
@@ -70,7 +70,7 @@ public class Server {
         try {
             minecraftServer = MinecraftServer.init(new Auth.Velocity(Files.readString(Path.of("forwarding.secret"))));
         } catch (IOException e) {
-            minecraftServer = MinecraftServer.init(new Auth.Online());
+            minecraftServer = MinecraftServer.init(new Auth.Offline());
         }
         MinestomPvP.init();
 

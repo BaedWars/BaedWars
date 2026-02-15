@@ -1,66 +1,65 @@
 package app.myhtl.baedwars.loaders;
 
+import app.myhtl.baedwars.Server;
 import app.myhtl.baedwars.game.BuyableItem;
 import app.myhtl.baedwars.game.ShopCategory;
-import org.yaml.snakeyaml.Yaml;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.*;
 
 import static app.myhtl.baedwars.Server.permanentItems;
 
 public class ShopLoader {
-    public static ShopCategory[] loadItemShopData() {
-        InputStream inputStream;
+
+    public static List<ShopCategory> loadItemShopData() {
+        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Path.of("itemShop.yml")) // Set where we will load and save to
+                .build();
+        CommentedConfigurationNode root;
+
         try {
-            inputStream = new FileInputStream("itemShop.yml");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            root = loader.load().node("categories");
+        } catch (IOException e) {
+            Server.logger.error("An error occurred while loading this configuration: {}", e.getMessage());
+            return null;
         }
 
-        Yaml yaml = new Yaml();
-        Map<String, Object> rawData = yaml.load(inputStream);
-        ShopCategory[] shopCategories = new ShopCategory[0];
-        if (rawData.values().toArray()[0] instanceof ArrayList<?> rawCategories) {
-            shopCategories = new ShopCategory[rawCategories.size()];
-            for (int i=0; i<rawCategories.size(); i++) {
-                Object rawCategory = rawCategories.get(i);
-                if (rawCategory instanceof LinkedHashMap<?, ?> mappedCategory) {
-                    int catIndex = (int) mappedCategory.get("index");
-                    String catIconID = (String) mappedCategory.get("icon");
-                    String catDisplayName = (String) mappedCategory.get("display_name");
-                    BuyableItem[] buyableItems = new BuyableItem[0];
-                    if (mappedCategory.get("items") instanceof ArrayList<?> rawItems) {
-                        buyableItems = new BuyableItem[rawItems.size()];
-                        for (int j=0; j<rawItems.size();j++) {
-                            Object rawItem = rawItems.get(j);
-                            if (rawItem instanceof LinkedHashMap<?, ?> mappedItem) {
-                                String itemID = (String) mappedItem.get("id");
-                                String itemDisplayName = (String) mappedItem.get("display_name");
-                                int itemQuantity = (int) mappedItem.get("quantity");
-                                String itemDescription = (String) mappedItem.get("description");
-                                int itemPrice = (int) mappedItem.get("price");
-                                String itemPriceItemID = (String) mappedItem.get("price_item");
+        List<ShopCategory> shopCategories = new ArrayList<>();
 
-                                boolean permanent = false;
-                                if (mappedItem.get("permanent") instanceof Boolean b) permanent = b;
+        if (!root.empty()) {
+            for (CommentedConfigurationNode rawCategory : root.childrenList()) {
+                var catIndex = rawCategory.node("index").getInt();
+                var catIconID = rawCategory.node("icon").getString();
+                var catDisplayName = rawCategory.node("display_name").getString();
+                var items = rawCategory.node("items");
 
-                                boolean isArmorSet = mappedItem.containsKey("armor_material");
-                                String armorMaterial = isArmorSet ? (String) mappedItem.get("armor_material") : null;
+                if (!items.childrenList().isEmpty()) {
+                    List<BuyableItem> buyableItems = new ArrayList<>();
+                    for (CommentedConfigurationNode rawItem : items.childrenList()) {
+                        String itemID = rawItem.node("id").getString();
+                        String itemDisplayName = rawItem.node("display_name").getString();
+                        int itemQuantity = rawItem.node("quantity").getInt();
+                        String itemDescription = rawItem.node("description").getString();
+                        int itemPrice = rawItem.node("price").getInt();
+                        String itemPriceItemID = rawItem.node("price_item").getString();
 
-                                buyableItems[j] = new BuyableItem(armorMaterial, itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID, permanent);
+                        boolean permanent = rawItem.node("permanent").getBoolean();
 
-                                if (buyableItems[j].permanent) {
-                                    permanentItems.add(buyableItems[j]);
-                                }
-                            }
+                        boolean isArmorSet = rawItem.hasChild("armor_material");
+                        String armorMaterial = isArmorSet ? rawItem.node("armor_material").toString() : null;
+
+                        BuyableItem item = new BuyableItem(armorMaterial, itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID, permanent);
+                        buyableItems.add(item);
+
+                        if (permanent) {
+                            permanentItems.add(item);
                         }
                     }
-                    shopCategories[i] = new ShopCategory(catIndex, catIconID, catDisplayName, buyableItems);
+                    assert catIconID != null;
+                    shopCategories.add(new ShopCategory(catIndex, catIconID, catDisplayName, buyableItems));
                 }
             }
         }

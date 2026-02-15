@@ -1,7 +1,5 @@
 package app.myhtl.baedwars.loaders;
 
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -10,6 +8,9 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ConfigLoader {
+    public static Map<?, ?> loadConfigData() {
+        return null;
+    }
     public static Map<UUID, Integer> loadPermissionData() {
         Map<UUID, Integer> permissions = new HashMap<>();
         InputStream inputStream;
@@ -19,11 +20,10 @@ public class ConfigLoader {
             throw new RuntimeException(e);
         }
 
-        Yaml yaml = new Yaml();
-        Map<String, Object> rawData = yaml.load(inputStream);
-        for (String key : rawData.keySet()) {
-            permissions.put(UUID.fromString(key), (Integer) rawData.get(key));
-        }
-        return permissions;
+        //for (String key : rawData.keySet()) {
+        //    permissions.put(UUID.fromString(key), (Integer) rawData.get(key));
+        //}
+        //return permissions;
+        return null;
     }
 }

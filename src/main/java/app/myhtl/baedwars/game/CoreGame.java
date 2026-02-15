@@ -121,8 +121,8 @@ public class CoreGame {
         teams = new Team[teamsAmount];
         for (int i = 0; i < teamsAmount; i++) {
             teams[i] = new Team();
-            teams[i].players = new Player[playersPerTeams];
-            teams[i].playerUUIDs = new UUID[playersPerTeams];
+            teams[i].players = new ArrayList<>();
+            teams[i].playerUUIDs = new ArrayList<>();
             teams[i].color = Server.map.teamColors[i];
             teams[i].spawnPos = Server.map.teamSpawnPoints[i];
             teams[i].alivePlayers = playersPerTeams;
@@ -133,9 +133,9 @@ public class CoreGame {
     }
     public static void joinRandomTeam(Player player) {
         int randomTeamIndex = (int) (Math.random() * teams.length);
-        if (teams[randomTeamIndex].players[0] == null) {
-            teams[randomTeamIndex].players[0] = player;
-            teams[randomTeamIndex].playerUUIDs[0] = player.getUuid();
+        if (teams[randomTeamIndex].players.size() < playersPerTeams) {
+            teams[randomTeamIndex].players.add(player);
+            teams[randomTeamIndex].playerUUIDs.add(player.getUuid());
             teams[randomTeamIndex].enderChests.put(player.getUuid(), new Inventory(InventoryType.CHEST_3_ROW, Component.text("Ender Chest")));
             totalPlayers++;
         } else {

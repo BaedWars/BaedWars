@@ -12,10 +12,8 @@ import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.inventory.PlayerInventory;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.recipe.display.SlotDisplay;
 import net.minestom.server.tag.Tag;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static app.myhtl.baedwars.game.ShopCategory.getCategoryFromTitle;
@@ -23,7 +21,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 public class ItemShop {
     public static void openShop(Player player) {
-        ShopCategory currentCategory = Server.itemShopData[0];
+        ShopCategory currentCategory = Server.itemShopData.getFirst();
         player.openInventory(generateInventory(currentCategory, 0));
     }
 
@@ -42,7 +40,7 @@ public class ItemShop {
     }
     private static void buyItem(int itemIndex, Player player, String categoryTitle) {
         ShopCategory category = getCategoryFromTitle(categoryTitle);
-        BuyableItem currentItem = category.buyableItems[itemIndex];
+        BuyableItem currentItem = category.buyableItems.get(itemIndex);
         PlayerInventory inventory = player.getInventory();
 
         if (CoreGame.getFreePlayerInvSlots(player) > 0) {
@@ -71,7 +69,7 @@ public class ItemShop {
     }
     private static void changeCategory(int slot, Player player, AbstractInventory currentInventory) {
         if (currentInventory.getItemStack(slot).material() != Material.AIR) {
-            ShopCategory currentCategory = Server.itemShopData[slot];
+            ShopCategory currentCategory = Server.itemShopData.get(slot);
             player.openInventory(generateInventory(currentCategory, slot));
         }
     }
@@ -85,15 +83,15 @@ public class ItemShop {
                 inventory.setItemStack(i+9, ItemStack.of(Material.GRAY_STAINED_GLASS_PANE));
             }
         }
-        for (int i = 0; i < Server.itemShopData.length; i++) {
-            ShopCategory category = Server.itemShopData[i];
+        for (int i = 0; i < Server.itemShopData.size(); i++) {
+            ShopCategory category = Server.itemShopData.get(i);
             ItemStack item = ItemStack.builder(category.icon)
                     .set(DataComponents.ITEM_NAME, Component.text(category.displayName, GREEN))
                     .build();
             inventory.setItemStack(i, item);
         }
-        for (int i = 0; i < currentCategory.buyableItems.length; i++) {
-            BuyableItem buyableItem = currentCategory.buyableItems[i];
+        for (int i = 0; i < currentCategory.buyableItems.size(); i++) {
+            BuyableItem buyableItem = currentCategory.buyableItems.get(i);
             int[] usableSlots = new int[]{19,20,21,22,23,24,25,28,29,30,31,32,33,34};
             TextColor currencyColor = GRAY;
             String currencyName = buyableItem.priceItem.toString();

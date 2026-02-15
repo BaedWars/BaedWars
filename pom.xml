@@ -67,17 +67,20 @@
             <version>2.2</version>
         </dependency>
         <dependency>
+            <groupId>org.spongepowered</groupId>
+            <artifactId>configurate-yaml</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>io.github.togar2</groupId>
             <artifactId>MinestomPvP</artifactId>
             <version>2025.12.29-1.21.11</version>
         </dependency>
-        <!-- Required for all platforms -->
         <dependency>
             <groupId>io.github.revxrsal</groupId>
             <artifactId>lamp.common</artifactId>
             <version>4.0.0-rc.12</version>
         </dependency>
-        <!-- Add your specific platform module here -->
         <dependency>
             <groupId>io.github.revxrsal</groupId>
             <artifactId>lamp.minestom</artifactId>
