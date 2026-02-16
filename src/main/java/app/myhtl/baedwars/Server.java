@@ -31,21 +31,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.ObjectInputFilter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Server {
+    public static Properties config = ConfigLoader.loadConfigData();
+    public static Map<UUID, Integer> permissionData = ConfigLoader.loadPermissionData();
+    public static List<ShopCategory> itemShopData = ShopLoader.loadItemShopData();
+    public static HashSet<BuyableItem> permanentItems = new HashSet<>();
     public static Logger logger = LoggerFactory.getLogger(Server.class);
     public static boolean gameStarted = false;
     public static World map;
     public static NPC[] npcs;
-    public static HashSet<BuyableItem> permanentItems = new HashSet<>();
-    public static List<ShopCategory> itemShopData = ShopLoader.loadItemShopData();
-    public static Map<UUID, Integer> permissionData = ConfigLoader.loadPermissionData();
     public static String round_id = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
     public static final List<Block> bedList = List.of(
             Block.BLACK_BED, Block.BLUE_BED, Block.BROWN_BED, Block.CYAN_BED,

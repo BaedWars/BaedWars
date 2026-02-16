@@ -1,29 +1,43 @@
 package app.myhtl.baedwars.loaders;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import app.myhtl.baedwars.Server;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 public class ConfigLoader {
-    public static Map<?, ?> loadConfigData() {
-        return null;
+    public static Properties loadConfigData() {
+        Properties props = new Properties();
+        try (InputStream in = Files.newInputStream(Path.of("server.properties"))) {
+            props.load(in);
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+        }
+        return props;
     }
     public static Map<UUID, Integer> loadPermissionData() {
-        Map<UUID, Integer> permissions = new HashMap<>();
-        InputStream inputStream;
+        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Path.of("permissions.yml")) // Set where we will load and save to
+                .build();
+        CommentedConfigurationNode root;
+
         try {
-            inputStream = new FileInputStream("permissions.yml");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            root = loader.load();
+        } catch (IOException e) {
+            Server.logger.error("An error occurred while loading this configuration: {}", e.getMessage());
+            return null;
         }
 
-        //for (String key : rawData.keySet()) {
-        //    permissions.put(UUID.fromString(key), (Integer) rawData.get(key));
-        //}
-        //return permissions;
-        return null;
+        Map<UUID, Integer> permissions = new HashMap<>();
+
+        for (CommentedConfigurationNode permNode : root.childrenList()) {
+            permissions.put(UUID.fromString(Objects.requireNonNull(permNode.key()).toString()), permNode.getInt());
+        }
+        return permissions;
     }
 }
