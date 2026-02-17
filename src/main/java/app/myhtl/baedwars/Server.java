@@ -37,11 +37,11 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class Server {
+    public static Logger logger = LoggerFactory.getLogger(Server.class);
     public static Properties config = ConfigLoader.loadConfigData();
+    public static List<BuyableItem> permanentItems = new ArrayList<>();
     public static Map<UUID, Integer> permissionData = ConfigLoader.loadPermissionData();
     public static List<ShopCategory> itemShopData = ShopLoader.loadItemShopData();
-    public static HashSet<BuyableItem> permanentItems = new HashSet<>();
-    public static Logger logger = LoggerFactory.getLogger(Server.class);
     public static boolean gameStarted = false;
     public static World map;
     public static NPC[] npcs;
@@ -57,7 +57,8 @@ public class Server {
         try {
             map = World.load(Path.of("worlds/map01.yml"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("");
+            System.exit(1);
         }
     }
 
@@ -69,7 +70,7 @@ public class Server {
         try {
             minecraftServer = MinecraftServer.init(new Auth.Velocity(Files.readString(Path.of("forwarding.secret"))));
         } catch (IOException e) {
-            minecraftServer = MinecraftServer.init(new Auth.Offline());
+            minecraftServer = MinecraftServer.init(new Auth.Online());
         }
         MinestomPvP.init();
 

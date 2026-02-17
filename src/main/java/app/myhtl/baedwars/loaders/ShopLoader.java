@@ -7,23 +7,29 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 import static app.myhtl.baedwars.Server.permanentItems;
+import static app.myhtl.baedwars.loaders.ConfigLoader.setupConfigFile;
 
 public class ShopLoader {
 
     public static List<ShopCategory> loadItemShopData() {
+        Path path = Path.of("itemShop.yml");
+        if (!Files.exists(path)) {
+            setupConfigFile("itemShop.yml");
+        }
         YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
-                .path(Path.of("itemShop.yml")) // Set where we will load and save to
+                .path(path) // Set where we will load and save to
                 .build();
         CommentedConfigurationNode root;
 
         try {
             root = loader.load().node("categories");
         } catch (IOException e) {
-            Server.logger.error("An error occurred while loading this configuration: {}", e.getMessage());
+            setupConfigFile("itemShop.yml");
             return null;
         }
 
