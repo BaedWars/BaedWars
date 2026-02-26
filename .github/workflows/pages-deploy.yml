@@ -16,6 +16,9 @@ jobs:
         working-directory: ./website
     runs-on: ubuntu-latest
     steps:
+      - name: List content
+        run: ls
+    
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
