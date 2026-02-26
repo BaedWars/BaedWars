@@ -3,15 +3,11 @@ package app.myhtl.baedwars.commands;
 import app.myhtl.baedwars.Server;
 import app.myhtl.baedwars.game.CoreGame;
 import app.myhtl.baedwars.game.Team;
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.adventure.audience.Audiences;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
-import net.minestom.server.sound.SoundEvent;
-
-import java.util.Objects;
 
 import static app.myhtl.baedwars.game.CoreGame.teams;
 

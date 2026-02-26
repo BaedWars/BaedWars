@@ -1,0 +1,8 @@
+{
+  "label": "Configuration",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "The most important steps for your own Baedwars server"
+  }
+}

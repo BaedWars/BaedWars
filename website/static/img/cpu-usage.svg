@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg15"
+   sodipodi:docname="cpu-usage.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs15" />
+  <sodipodi:namedview
+     id="namedview15"
+     pagecolor="#1b1b1d"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.51625"
+     inkscape:cx="399.67024"
+     inkscape:cy="452.76175"
+     inkscape:window-width="2560"
+     inkscape:window-height="1494"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg15" />
+  <path
+     d="M9.6 20H14.4C18.4 20 20 18.4 20 14.4V9.6C20 5.6 18.4 4 14.4 4H9.6C5.6 4 4 5.6 4 9.6V14.4C4 18.4 5.6 20 9.6 20Z"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path1"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M10.5 17H13.5C16 17 17 16 17 13.5V10.5C17 8 16 7 13.5 7H10.5C8 7 7 8 7 10.5V13.5C7 16 8 17 10.5 17Z"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path2"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M8.00977 4V2"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path3"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M12 4V2"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path4"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M16 4V2"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path5"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M20 8H22"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path6"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M20 12H22"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path7"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M20 16H22"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path8"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M16 20V22"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path9"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M12.0098 20V22"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path10"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M8.00977 20V22"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path11"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M2 8H4"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path12"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M2 12H4"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path13"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     opacity="0.4"
+     d="M2 16H4"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path14"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+  <path
+     d="M11.9997 9.7002L11.0597 11.3402C10.8497 11.7002 11.0197 12.0002 11.4397 12.0002H12.5597C12.9797 12.0002 13.1497 12.3002 12.9397 12.6602L11.9997 14.3002"
+     stroke="#292D32"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path15"
+     style="stroke:#b9c0c6;stroke-opacity:1" />
+</svg>
