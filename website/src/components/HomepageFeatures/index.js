@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
 const FeatureList = [
@@ -8,7 +7,7 @@ const FeatureList = [
     Svg: require('@site/static/img/cpu-usage.svg').default,
     description: (
       <>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+        Baedwars uses 4x less memory and 2x less CPU compared to a 1.21.11 Bedwars PaperMC server (with Bedwars plugins installed).
       </>
     ),
   },
@@ -17,7 +16,8 @@ const FeatureList = [
     Svg: require('@site/static/img/tools.svg').default,
     description: (
       <>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+        Configure shops, maps, and server behavior to fit your own Bedwars style, from
+        casual public matches to highly competitive custom setups.
       </>
     ),
   },
@@ -26,7 +26,8 @@ const FeatureList = [
     Svg: require('@site/static/img/minestom.svg').default,
     description: (
       <>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+        Built on Minestom, a next-generation Minecraft server framework, to deliver smooth
+        performance under load and faster feature iteration.
       </>
     ),
   },
