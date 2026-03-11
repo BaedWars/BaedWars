@@ -34,9 +34,11 @@ import java.io.IOException;
 import java.io.ObjectInputFilter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Server {
+    public static long startTime = System.nanoTime();
     public static Logger logger = LoggerFactory.getLogger(Server.class);
     public static Properties config = ConfigLoader.loadConfigData();
     public static List<BuyableItem> permanentItems = new ArrayList<>();
@@ -130,6 +132,8 @@ public class Server {
 
         MinecraftServer.getCommandManager().register(new SkipLobby());
         MinecraftServer.setBrandName("BaedWars");
-        minecraftServer.start("0.0.0.0", 25545);
+        minecraftServer.start("0.0.0.0", Integer.parseInt(config.getProperty("server-port", "25565")));
+        float totalTime = (float) (System.nanoTime() - startTime) / 1000000000;
+        logger.info(String.format(Locale.US, "Done (%.3fs)! For help, type \"help\"", totalTime));
     }
 }
