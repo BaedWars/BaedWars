@@ -1,6 +1,8 @@
 package app.myhtl.baedwars.loaders;
 
 import app.myhtl.baedwars.Server;
+import app.myhtl.baedwars.game.BuyableItem;
+import app.myhtl.baedwars.game.ShopCategory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -8,8 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
+import static app.myhtl.baedwars.Server.permanentItems;
 import static java.lang.System.exit;
 
 public class ConfigLoader {
@@ -20,7 +26,7 @@ public class ConfigLoader {
         } catch (IOException e) {
             Server.logger.warn("Generated new {}, please configure before starting the server!", "server.properties");
             setupConfigFile("server.properties");
-            exit(1);
+            exit(0);
             return null;
         }
         return props;
@@ -31,22 +37,131 @@ public class ConfigLoader {
             setupConfigFile("permissions.yml");
         }
         YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(path)
+                .build();
+
+        CommentedConfigurationNode root;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            Server.logger.error("Could not load permissions.yml", e);
+            return Collections.emptyMap();
+        }
+
+        Map<UUID, Integer> permissions = new HashMap<>();
+        for (Map.Entry<Object, ? extends CommentedConfigurationNode> entry : root.childrenMap().entrySet()) {
+            String rawKey = String.valueOf(entry.getKey());
+            try {
+                UUID uuid = UUID.fromString(rawKey);
+                permissions.put(uuid, entry.getValue().getInt());
+            } catch (IllegalArgumentException ex) {
+                Server.logger.warn("Invalid UUID in permissions.yml: {}", rawKey);
+            }
+        }
+
+        return permissions;
+    }
+    public static List<ShopCategory> loadItemShopData() {
+        Path path = Path.of("itemShop.yml");
+        if (!Files.exists(path)) {
+            setupConfigFile("itemShop.yml");
+        }
+        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                 .path(path) // Set where we will load and save to
                 .build();
         CommentedConfigurationNode root;
 
         try {
-            root = loader.load();
+            root = loader.load().node("categories");
         } catch (IOException e) {
+            setupConfigFile("itemShop.yml");
             return null;
         }
 
-        Map<UUID, Integer> permissions = new HashMap<>();
+        List<ShopCategory> shopCategories = new ArrayList<>();
 
-        for (CommentedConfigurationNode permNode : root.childrenList()) {
-            permissions.put(UUID.fromString(Objects.requireNonNull(permNode.key()).toString()), permNode.getInt());
+        if (!root.empty()) {
+            for (CommentedConfigurationNode rawCategory : root.childrenList()) {
+                var catIndex = rawCategory.node("index").getInt();
+                var catIconID = rawCategory.node("icon").getString();
+                var catDisplayName = rawCategory.node("display_name").getString();
+                var items = rawCategory.node("items");
+
+                if (!items.childrenList().isEmpty()) {
+                    List<BuyableItem> buyableItems = new ArrayList<>();
+                    for (CommentedConfigurationNode rawItem : items.childrenList()) {
+                        String itemID = rawItem.node("id").getString();
+                        String itemDisplayName = rawItem.node("display_name").getString();
+                        int itemQuantity = rawItem.node("quantity").getInt();
+                        String itemDescription = rawItem.node("description").getString();
+                        int itemPrice = rawItem.node("price").getInt();
+                        String itemPriceItemID = rawItem.node("price_item").getString();
+
+                        boolean permanent = rawItem.node("permanent").getBoolean();
+
+                        boolean isArmorSet = rawItem.hasChild("armor_material");
+                        String armorMaterial = isArmorSet ? rawItem.node("armor_material").toString() : null;
+
+                        BuyableItem item = new BuyableItem(armorMaterial, itemID, itemQuantity, itemDisplayName, itemDescription, itemPrice, itemPriceItemID, permanent);
+                        buyableItems.add(item);
+
+                        if (permanent) {
+                            permanentItems.add(item);
+                        }
+                    }
+                    assert catIconID != null;
+                    shopCategories.add(new ShopCategory(catIndex, catIconID, catDisplayName, buyableItems));
+                }
+            }
         }
-        return permissions;
+        return shopCategories;
+    }
+    public static void setupExampleWorld() {
+        Path worldsDir = Path.of("worlds");
+        if (Files.isDirectory(worldsDir)) {
+            return;
+        }
+        try {
+            Files.createDirectories(worldsDir);
+
+            try (InputStream zipStream = Server.class.getResourceAsStream("/defaultworld.zip")) {
+                if (zipStream == null) {
+                    throw new IllegalStateException("Resource not found: defaultworld.zip");
+                }
+
+                try (ZipInputStream zis = new ZipInputStream(zipStream)) {
+                    ZipEntry entry;
+                    while ((entry = zis.getNextEntry()) != null) {
+                        Path target = worldsDir.resolve(entry.getName()).normalize();
+
+                        // Prevent zip-slip so archive entries cannot escape the worlds directory.
+                        if (!target.startsWith(worldsDir)) {
+                            throw new IOException("Invalid zip entry: " + entry.getName());
+                        }
+
+                        if (entry.isDirectory()) {
+                            Files.createDirectories(target);
+                        } else {
+                            Path parent = target.getParent();
+                            if (parent != null) {
+                                Files.createDirectories(parent);
+                            }
+                            Files.copy(zis, target, StandardCopyOption.REPLACE_EXISTING);
+                        }
+                        zis.closeEntry();
+                    }
+                }
+            }
+
+            try (InputStream worldConfigStream = Server.class.getResourceAsStream("/defaultworld.yml")) {
+                if (worldConfigStream == null) {
+                    throw new IllegalStateException("Resource not found: defaultworld.yml");
+                }
+                Files.copy(worldConfigStream, worldsDir.resolve("defaultworld.yml"), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to setup example world", e);
+        }
     }
     public static void setupConfigFile(String filename) {
         try (InputStream s = Server.class.getResourceAsStream("/" +filename)) {

@@ -1,3 +1,5 @@
+# BaedWars - itemShop.yml
+# Docs: https://baedwars.myhtl.app/config/item-shop
 categories:
   - index: 1
     icon: "NETHER_STAR"

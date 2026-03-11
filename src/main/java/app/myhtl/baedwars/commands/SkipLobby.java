@@ -31,6 +31,8 @@ public class SkipLobby extends Command {
                             }
                         }
                     }
+                } else {
+                    sender.sendMessage(CoreGame.serverPrefix.append(Component.text("You can't execute this command!")));
                 }
             }
         });

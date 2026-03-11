@@ -6,7 +6,6 @@ import app.myhtl.baedwars.handlers.blocks.Beehive;
 import app.myhtl.baedwars.handlers.blocks.Chest;
 import app.myhtl.baedwars.handlers.blocks.EnderChest;
 import app.myhtl.baedwars.loaders.ConfigLoader;
-import app.myhtl.baedwars.loaders.ShopLoader;
 import io.github.togar2.pvp.MinestomPvP;
 import io.github.togar2.pvp.feature.CombatFeatureSet;
 import io.github.togar2.pvp.feature.CombatFeatures;
@@ -16,6 +15,7 @@ import io.github.togar2.pvp.utils.CombatVersion;
 import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.event.server.ServerListPingEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.anvil.AnvilLoader;
@@ -41,7 +41,7 @@ public class Server {
     public static Properties config = ConfigLoader.loadConfigData();
     public static List<BuyableItem> permanentItems = new ArrayList<>();
     public static Map<UUID, Integer> permissionData = ConfigLoader.loadPermissionData();
-    public static List<ShopCategory> itemShopData = ShopLoader.loadItemShopData();
+    public static List<ShopCategory> itemShopData = ConfigLoader.loadItemShopData();
     public static boolean gameStarted = false;
     public static World map;
     public static NPC[] npcs;
@@ -55,9 +55,10 @@ public class Server {
 
     static {
         try {
-            map = World.load(Path.of("worlds/map01.yml"));
+            ConfigLoader.setupExampleWorld();
+            map = World.load(Path.of("worlds/" + config.getProperty("map-name") + ".yml"));
         } catch (IOException e) {
-            logger.error("");
+            logger.error("Failed to load world");
             System.exit(1);
         }
     }
