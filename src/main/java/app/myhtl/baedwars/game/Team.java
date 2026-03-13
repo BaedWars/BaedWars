@@ -23,10 +23,10 @@ public class Team {
     public Inventory teamChest = new Inventory(InventoryType.CHEST_3_ROW, Component.text("Team Chest"));
     public Dictionary<UUID, Inventory> enderChests = new Hashtable<>();
 
-    public static Team getTeamFromPlayer(Player player) {
+    public static Team getTeamFromPlayer(Player teamPlayer) {
         for (Team team : teams) {
-            for (Player player1 : team.players) {
-                if (player1 == player) {
+            for (Player player : team.players) {
+                if (teamPlayer == player) {
                     return team;
                 }
             }
@@ -34,8 +34,8 @@ public class Team {
             for (int i = 0; i < playerUUIDs.size(); i++) {
                 UUID uuid = playerUUIDs.get(i);
                 if (uuid != null) {
-                    if (Objects.equals(uuid.toString(), player.getUuid().toString())) {
-                        team.players.set(i, player);
+                    if (Objects.equals(uuid.toString(), teamPlayer.getUuid().toString())) {
+                        team.players.set(i, teamPlayer);
                         return team;
                     }
                 }

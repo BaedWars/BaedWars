@@ -96,7 +96,6 @@ public class CoreGame {
                 }
             }
         }
-        Audiences.players().sendMessage(Component.text("You can leave with /lobby"));
         final int[] i = {-5};
         scheduler.submitTask(() -> {
             i[0] += 5;
@@ -133,15 +132,16 @@ public class CoreGame {
         }
     }
     public static void joinRandomTeam(Player player) {
-        int randomTeamIndex = (int) (Math.random() * teams.length);
-        if (teams[randomTeamIndex].players.size() < playersPerTeams) {
-            teams[randomTeamIndex].players.add(player);
-            teams[randomTeamIndex].playerUUIDs.add(player.getUuid());
-            teams[randomTeamIndex].enderChests.put(player.getUuid(), new Inventory(InventoryType.CHEST_3_ROW, Component.text("Ender Chest")));
-            totalPlayers++;
-        } else {
-            joinRandomTeam(player);
+        ArrayList<Team> validTeams = new ArrayList<>();
+        Random rand = new Random();
+        for (Team team: teams) {
+            if (team.players.size() < playersPerTeams) validTeams.add(team);
         }
+        var team = validTeams.get(rand.nextInt(validTeams.size()));
+        team.players.add(player);
+        team.playerUUIDs.add(player.getUuid());
+        team.enderChests.put(player.getUuid(), new Inventory(InventoryType.CHEST_3_ROW, Component.text("Ender Chest")));
+        totalPlayers++;
     }
     public static void joinSpectatorTeam() {
     }
@@ -192,15 +192,11 @@ public class CoreGame {
         for (int i=0; i<CoreGame.teams.length; i++) {
             Team team = CoreGame.teams[i];
             for (Player player : team.players) {
-                if (player != null) {
-                    if (player.getGameMode() != GameMode.SURVIVAL && team.alivePlayers > 0) {
-                        team.alivePlayers--;
-                    }
+                if (player != null && player.getGameMode() != GameMode.SURVIVAL) {
+                    team.alivePlayers--;
                 }
             }
-            if (team.alivePlayers == 0) {
-                stopGame(scheduler);
-            }
+            if (team.players.isEmpty()) {team.alivePlayers = 0;}
             String colorString = team.color.substring(0, 1).toUpperCase() + team.color.substring(1).toLowerCase();
             Component mainComponent = Component.text(team.color.toUpperCase().charAt(0)).color(NamedTextColor.NAMES.value(team.color.toLowerCase())).append(Component.text(" " + colorString + ":").color(WHITE));
             if (team.bedDestroyed) {
@@ -217,6 +213,12 @@ public class CoreGame {
             }
             sidebar.updateLineContent("team0" + (i - 1), mainComponent);
         }
+        for (Team team : CoreGame.teams) {
+            if (team.alivePlayers == 0 | team.players.isEmpty()) {
+                stopGame(scheduler);
+            }
+        }
+
     }
     public static void generateLobbySidebar() {
         lobbySidebar = new Sidebar(Component.text("    BED WARS    ").color(YELLOW).decorate(TextDecoration.BOLD));
@@ -303,7 +305,7 @@ public class CoreGame {
         AtomicInteger counter = new AtomicInteger();
         Team team = getTeamFromPlayer(player);
         try {
-            player.teleport(new Pos(-13, 85, -18), new Vec(0));
+            player.teleport(getSpawnPos(player).add(0, 50, 0));
         } catch (IllegalStateException ignored) {}
         player.setGameMode(GameMode.SPECTATOR);
         player.closeInventory();

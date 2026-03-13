@@ -1,66 +1,72 @@
 # BaedWars - itemShop.yml
 # Docs: https://baedwars.myhtl.app/config/custom-world
+---
 savePath: worlds/defaultworld
 lobbySpawn:
-  x: 37.5
-  y: -0.5
-  z: 37.5
-  yaw: -45.0
-  pitch: 0.0
+  x: 0.5
+  y: 60
+  z: 0.5
+  yaw: -90
+  pitch: 90
 diaSpawner:
-  x: 37.5
-  y: -0.5
-  z: 37.5
-  yaw: -45.0
-  pitch: 0.0
+  - x: 40.5
+    y: 2.5
+    z: -39.5
+    yaw: 45
+    pitch: 0
+  - x: -39.5
+    y: 2.5
+    z: 40.5
+    yaw: -135
+    pitch: 0
 teams:
   - color: RED
     spawn:
-      x: 37.5
+      x: -36.75
       y: -0.5
-      z: 37.5
-      yaw: -45.0
-      pitch: 0.0
-    itemShop:
-      x: 40.5
-      y: 0.0
-      z: 43.5
-      yaw: -180.0
-      pitch: 0.0
-    teamShop:
-      x: 43.5
-      y: 0.0
-      z: 40.5
-      yaw: 90.0
-      pitch: 0.0
-    ironSpawner:
-      x: 43.5
-      y: 0.0
-      z: 40.5
-      yaw: 90.0
-      pitch: 0.0
-  - color: BLUE
-    spawn:
-      x: -36.5
-      y: -0.5
-      z: -36.5
-      yaw: 135.0
-      pitch: 0.0
+      z: -36.75
+      yaw: 135
+      pitch: 0
     itemShop:
       x: -39.5
-      y: 0.0
+      y: 0
       z: -42.5
-      yaw: 0.0
-      pitch: 0.0
+      yaw: 0
+      pitch: 0
     teamShop:
       x: -42.5
-      y: 0.0
+      y: 0
       z: -39.5
-      yaw: -90.0
-      pitch: 0.0
+      yaw: -90
+      pitch: 0
     ironSpawner:
+      x: -36.75
+      y: -0.5
+      z: -36.75
+      yaw: 135
+      pitch: 0
+  - color: BLUE
+    spawn:
+      x: 37.75
+      y: -0.5
+      z: 37.75
+      yaw: -45
+      pitch: 0
+    itemShop:
+      x: 40.5
+      y: 0
+      z: 43.5
+      yaw: -180
+      pitch: 0
+    teamShop:
       x: 43.5
-      y: 0.0
+      y: 0
       z: 40.5
-      yaw: 90.0
-      pitch: 0.0
+      yaw: 90
+      pitch: 0
+    ironSpawner:
+      x: 37.75
+      y: -0.5
+      z: 37.75
+      yaw: -45
+      pitch: 0

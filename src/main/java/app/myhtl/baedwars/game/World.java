@@ -15,16 +15,16 @@ import java.util.List;
 public class World {
     public int numberOfTeams;
     public Path savePath;
-    public Pos diaSpawnerPos;
     public Pos lobbySpawnPos;
     public String[] teamColors;
     public Pos[] teamSpawnPoints;
     // Neue Felder: Positionen der Shop-NPCs je Team (optional)
     public Pos[] itemShopNPCPositions;
     public Pos[] teamShopNPCPositions;
+    public Pos[] diaSpawnerPos;
     public Pos[] ironSpawnerPos;
 
-    public World(int numberOfTeams, Path savePath, Pos lobbySpawnPos, String[] teamColors, Pos[] teamSpawnPoints, Pos[] itemShopNPCPositions, Pos[] teamShopNPCPositions, Pos[] ironSpawnerPos, Pos diaSpawnerPos) {
+    public World(int numberOfTeams, Path savePath, Pos lobbySpawnPos, String[] teamColors, Pos[] teamSpawnPoints, Pos[] itemShopNPCPositions, Pos[] teamShopNPCPositions, Pos[] ironSpawnerPos, Pos[] diaSpawnerPos) {
         this.numberOfTeams = numberOfTeams;
         this.savePath = savePath;
         this.lobbySpawnPos = lobbySpawnPos;

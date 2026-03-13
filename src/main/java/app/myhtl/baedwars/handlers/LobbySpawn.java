@@ -14,6 +14,7 @@ public class LobbySpawn {
         Player player = event.getPlayer();
         player.setInvisible(true);
         CoreGame.updateLobbySidebar();
+
         player.teleport(Server.map.lobbySpawnPos);
         player.sendMessage(Component.text(player.getUsername()).color(AQUA).append(Component.text(" has joined ").color(WHITE),
                 Component.text("(").color(WHITE),

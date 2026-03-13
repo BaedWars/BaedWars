@@ -16,6 +16,7 @@ import io.github.togar2.pvp.feature.provider.DifficultyProvider;
 import io.github.togar2.pvp.utils.CombatVersion;
 import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
@@ -92,6 +93,7 @@ public class Server {
         instanceContainer.setExplosionSupplier(modernVanilla.get(FeatureType.EXPLOSION).getExplosionSupplier());
         instanceContainer.setTimeRate(0);
         instanceContainer.setTime(6000);
+        instanceContainer.setBlock(Server.map.lobbySpawnPos.blockX(), Server.map.lobbySpawnPos.blockY()-1, Server.map.lobbySpawnPos.blockZ(), Block.BARRIER);
 
         var handler = MinecraftServer.getGlobalEventHandler();
         handler.addChild(modernVanilla.createNode());
@@ -102,8 +104,8 @@ public class Server {
         handler.addChild(BedwarsEventListener.getPlayerEvent(scheduler));
         handler.addChild(SpectatorEventListener.getPlayerEvent());
 
-        Pos[] posIrGoSpawner = new Pos[]{new Pos(-56.5, 60.5, -69.5),new Pos(29.5, 60.5, 32.5)};
-        Pos[] posDiaSpawner = new Pos[]{new Pos(-49.5, 61.5, -14.5), new Pos(22.5, 61.5, -22.5)};
+        Pos[] posIrGoSpawner = map.ironSpawnerPos;
+        Pos[] posDiaSpawner = map.diaSpawnerPos;
         scheduler.submitTask(() -> {
             ItemGen.item(posIrGoSpawner, instanceContainer, Material.IRON_INGOT);
             return TaskSchedule.millis(1500);

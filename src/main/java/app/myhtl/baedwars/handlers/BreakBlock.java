@@ -34,7 +34,13 @@ public class BreakBlock {
         if (bedList.contains(broken)) {
             for (Team team: teams) {
                 if (broken.name().contains(team.color.toLowerCase())) {
+                    if (Team.getTeamFromPlayer(player) == team) {
+                        player.sendMessage(Component.text("You can't break that!").color(RED));
+                        event.setCancelled(true);
+                        return;
+                    }
                     destroyedTeam = team;
+                    team.bedDestroyed = true;
                     break;
                 }
             }
@@ -45,10 +51,7 @@ public class BreakBlock {
                         teamplayer.sendTitlePart(TitlePart.SUBTITLE, Component.text("You will no longer respawn!").color(WHITE));
                     }
                 }
-                destroyedTeam.bedDestroyed = true;
-                for (Team team : teams) {
-                    CoreGame.updateTeamSidebar(team, scheduler);
-                }
+                CoreGame.updateTeamSidebar(Team.getTeamFromPlayer(player), scheduler);
             }
         } else if (!event.getBlock().hasTag(Tag.Boolean("PlayerPlaced"))) {
             player.sendMessage(Component.text("You can't break that!").color(RED));

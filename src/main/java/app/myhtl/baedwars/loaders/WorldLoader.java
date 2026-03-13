@@ -35,9 +35,7 @@ public class WorldLoader {
 
         var numberOfTeams = root.node("teams").childrenList().size();
         var savePath = Path.of(Objects.requireNonNull(root.node("savePath").getString()));
-
         var lobbySpawnPos = getPosFromNode(root.node("lobbySpawn"));
-        var diaSpawnerPos = getPosFromNode(root.node("diaSpawner"));
 
         var teamColors = new String[numberOfTeams];
         var teamSpawnPoints = new Pos[numberOfTeams];
@@ -52,6 +50,12 @@ public class WorldLoader {
             itemShopNPCPositions[i] = getPosFromNode(teamNode.node("itemShop"));
             teamShopNPCPositions[i] = getPosFromNode(teamNode.node("teamShop"));
             ironSpawnerPos[i] = getPosFromNode(teamNode.node("ironSpawner"));
+        }
+
+        var diaSpawnerAmount = root.node("diaSpawner").childrenList().size();
+        var diaSpawnerPos = new Pos[diaSpawnerAmount];
+        for (int i = 0; i < diaSpawnerAmount; i++) {
+            diaSpawnerPos[i] = getPosFromNode(root.node("diaSpawner").childrenList().get(i));
         }
         return new World(numberOfTeams, savePath, lobbySpawnPos, teamColors, teamSpawnPoints, itemShopNPCPositions, teamShopNPCPositions, ironSpawnerPos, diaSpawnerPos);
     }
