@@ -46,6 +46,7 @@ public class CoreGame {
     public static int teamsAmount = generateGameTypeData()[1];
     public static int totalPlayers = 0;
     public static final Component serverPrefix = Component.text("[").color(GRAY).append(Component.text("BaedWars").color(NamedTextColor.AQUA), Component.text("] ").color(GRAY));
+    public static final String serverPrefixText = "[BaedWars] ";
     public static void startGame(Scheduler scheduler) {
         int countdownDuration = 5;
         AtomicInteger counter = new AtomicInteger();

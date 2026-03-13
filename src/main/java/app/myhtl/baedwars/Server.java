@@ -1,11 +1,13 @@
 package app.myhtl.baedwars;
 
-import app.myhtl.baedwars.commands.SkipLobby;
+import app.myhtl.baedwars.commands.AdminCommands;
 import app.myhtl.baedwars.handlers.blocks.Bed;
 import app.myhtl.baedwars.handlers.blocks.Beehive;
 import app.myhtl.baedwars.handlers.blocks.Chest;
 import app.myhtl.baedwars.handlers.blocks.EnderChest;
+import app.myhtl.baedwars.helpers.ConsoleInputTask;
 import app.myhtl.baedwars.loaders.ConfigLoader;
+import app.myhtl.baedwars.loaders.WorldLoader;
 import io.github.togar2.pvp.MinestomPvP;
 import io.github.togar2.pvp.feature.CombatFeatureSet;
 import io.github.togar2.pvp.feature.CombatFeatures;
@@ -15,7 +17,6 @@ import io.github.togar2.pvp.utils.CombatVersion;
 import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
-import net.minestom.server.event.server.ServerListPingEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.anvil.AnvilLoader;
@@ -29,12 +30,12 @@ import net.minestom.server.timer.Scheduler;
 import net.minestom.server.timer.TaskSchedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import revxrsal.commands.minestom.MinestomLamp;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputFilter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class Server {
@@ -45,7 +46,7 @@ public class Server {
     public static Map<UUID, Integer> permissionData = ConfigLoader.loadPermissionData();
     public static List<ShopCategory> itemShopData = ConfigLoader.loadItemShopData();
     public static boolean gameStarted = false;
-    public static World map;
+    public static World map = WorldLoader.load(Path.of("worlds/" + config.getProperty("map-name") + ".yml"));
     public static NPC[] npcs;
     public static String round_id = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
     public static final List<Block> bedList = List.of(
@@ -55,26 +56,22 @@ public class Server {
             Block.PURPLE_BED, Block.RED_BED, Block.WHITE_BED, Block.YELLOW_BED
     );
 
-    static {
-        try {
-            ConfigLoader.setupExampleWorld();
-            map = World.load(Path.of("worlds/" + config.getProperty("map-name") + ".yml"));
-        } catch (IOException e) {
-            logger.error("Failed to load world");
-            System.exit(1);
-        }
-    }
-
-    ;
-
     public static void main(String[] args) {
-        // Initialize the server
-        MinecraftServer minecraftServer = null;
+        Auth auth;
         try {
-            minecraftServer = MinecraftServer.init(new Auth.Velocity(Files.readString(Path.of("forwarding.secret"))));
-        } catch (IOException e) {
-            minecraftServer = MinecraftServer.init(new Auth.Online());
+            auth = new Auth.Velocity(Files.readString(Path.of("forwarding.secret")));
+        } catch (IOException ignored) {
+            if (Objects.equals(config.getProperty("online-mode", "true"), "true")) {
+                auth = new Auth.Online();
+            } else {
+                auth = new Auth.Offline();
+            }
         }
+        MinecraftServer minecraftServer = MinecraftServer.init(auth);
+
+        Thread consoleThread = new Thread(new ConsoleInputTask());
+        consoleThread.setDaemon(true);
+        consoleThread.start();
         MinestomPvP.init();
 
         MinecraftServer.getBlockManager().registerHandler("minecraft:chest", Chest::new);
@@ -87,16 +84,15 @@ public class Server {
                 .remove(FeatureType.EXHAUSTION)
                 .build();
 
-        // Create the instance
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
         Scheduler scheduler = MinecraftServer.getSchedulerManager();
 
-        // Add an event callback to specify the spawning instance (and the spawn position)
         instanceContainer.setChunkLoader(new AnvilLoader(map.savePath));
         instanceContainer.setExplosionSupplier(modernVanilla.get(FeatureType.EXPLOSION).getExplosionSupplier());
         instanceContainer.setTimeRate(0);
         instanceContainer.setTime(6000);
+
         var handler = MinecraftServer.getGlobalEventHandler();
         handler.addChild(modernVanilla.createNode());
         handler.addChild(AllEventListener.getPlayerEvent(instanceContainer, scheduler));
@@ -130,7 +126,12 @@ public class Server {
         npcs = CoreGame.summonNPCs(instanceContainer);
         CoreGame.generateLobbySidebar();
 
-        MinecraftServer.getCommandManager().register(new SkipLobby());
+        var lamp = MinestomLamp.builder().build();
+        lamp.register(new AdminCommands());
+        MinecraftServer.getCommandManager().setUnknownCommandCallback((sender, command) -> {
+            sender.sendMessage(CoreGame.serverPrefix + "Unknown command: " + command);
+        });
+
         MinecraftServer.setBrandName("BaedWars");
         minecraftServer.start("0.0.0.0", Integer.parseInt(config.getProperty("server-port", "25565")));
         float totalTime = (float) (System.nanoTime() - startTime) / 1000000000;

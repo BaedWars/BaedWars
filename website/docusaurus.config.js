@@ -89,17 +89,13 @@ const config = {
             items: [
               {
                 label: 'Getting started',
-                to: '/docs/intro',
+                to: '/intro',
               },
             ],
           },
           {
             title: 'More',
             items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
               {
                 label: 'GitHub',
                 href: 'https://github.com/baedwars/baedwars',

@@ -3,10 +3,12 @@ package app.myhtl.baedwars.listeners;
 import app.myhtl.baedwars.game.ItemShop;
 import app.myhtl.baedwars.game.TeamShop;
 import app.myhtl.baedwars.handlers.DisconnectMessage;
+import app.myhtl.baedwars.handlers.PlayerCommand;
 import net.minestom.server.event.EventFilter;
 import net.minestom.server.event.EventNode;
 import net.minestom.server.event.inventory.InventoryPreClickEvent;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
+import net.minestom.server.event.player.PlayerCommandEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.trait.PlayerEvent;
 import app.myhtl.baedwars.handlers.SetSpawn;
@@ -20,6 +22,7 @@ public class AllEventListener {
         playerNode.addListener(InventoryPreClickEvent.class, ItemShop::handle);
         playerNode.addListener(InventoryPreClickEvent.class, TeamShop::handle);
         playerNode.addListener(PlayerDisconnectEvent.class, DisconnectMessage::handle);
+        playerNode.addListener(PlayerCommandEvent.class, PlayerCommand::handle);
         return playerNode;
     }
 }

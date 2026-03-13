@@ -116,53 +116,6 @@ public class ConfigLoader {
         }
         return shopCategories;
     }
-    public static void setupExampleWorld() {
-        Path worldsDir = Path.of("worlds");
-        if (Files.isDirectory(worldsDir)) {
-            return;
-        }
-        try {
-            Files.createDirectories(worldsDir);
-
-            try (InputStream zipStream = Server.class.getResourceAsStream("/defaultworld.zip")) {
-                if (zipStream == null) {
-                    throw new IllegalStateException("Resource not found: defaultworld.zip");
-                }
-
-                try (ZipInputStream zis = new ZipInputStream(zipStream)) {
-                    ZipEntry entry;
-                    while ((entry = zis.getNextEntry()) != null) {
-                        Path target = worldsDir.resolve(entry.getName()).normalize();
-
-                        // Prevent zip-slip so archive entries cannot escape the worlds directory.
-                        if (!target.startsWith(worldsDir)) {
-                            throw new IOException("Invalid zip entry: " + entry.getName());
-                        }
-
-                        if (entry.isDirectory()) {
-                            Files.createDirectories(target);
-                        } else {
-                            Path parent = target.getParent();
-                            if (parent != null) {
-                                Files.createDirectories(parent);
-                            }
-                            Files.copy(zis, target, StandardCopyOption.REPLACE_EXISTING);
-                        }
-                        zis.closeEntry();
-                    }
-                }
-            }
-
-            try (InputStream worldConfigStream = Server.class.getResourceAsStream("/defaultworld.yml")) {
-                if (worldConfigStream == null) {
-                    throw new IllegalStateException("Resource not found: defaultworld.yml");
-                }
-                Files.copy(worldConfigStream, worldsDir.resolve("defaultworld.yml"), StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to setup example world", e);
-        }
-    }
     public static void setupConfigFile(String filename) {
         try (InputStream s = Server.class.getResourceAsStream("/" +filename)) {
             assert s != null;
